@@ -26,7 +26,7 @@
                                     <th>No</th>
                                     <th>Biaya Per-M3</th>
                                     <th>Biaya Beban</th>
-                                    <th>Biaya denda</th>
+                                    <th>Biaya Denda</th>
                                     <th>Perbarui Tarif</th>
                                 </tr>
                             </thead>
@@ -36,7 +36,7 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>Rp. {{ $tarif->m3 }}</td>
                                         <td>Rp. {{ $tarif->beban }}</td>
-                                        <td>Rp. {{ $tarif->denda }}</td>
+                                        <td>Rp. {{ $tarif->denda }} / Bulan</td>
                                         <td>
                                             <a href="/tarif/{{ $tarif->id }}/edit" type="button" class="btn btn-warning mb-1"><i class="ti ti-edit"></i></a>
                                         </td>

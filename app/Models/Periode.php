@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use App\Models\Bulan;
+use App\Models\Tahun;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Pemakaian extends Model
+class Periode extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
@@ -16,14 +17,8 @@ class Pemakaian extends Model
         return $this->belongsTo(Bulan::class);
     }
 
-    public function user()
+    public function tahun()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Tahun::class);
     }
-    
-    public function periode()
-    {
-        return $this->belongsTo(Periode::class);
-    }
-    
 }

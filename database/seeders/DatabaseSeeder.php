@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Bulan;
+use App\Models\Periode;
 use App\Models\Tahun;
 use App\Models\Tarif;
 use Illuminate\Database\Seeder;
@@ -28,6 +29,15 @@ class DatabaseSeeder extends Seeder
             'no_pelanggan'  => 'PAM0001',
             'name'          => 'Dwi Purnomo',
             'email'         => 'purnomodwi174@gmail.com',
+            'no_hp'         => '081229248179',
+            'tgl_pasang'    => '2023-10-16',
+            'password'      => bcrypt('1234'),
+            'role_id'       => 2
+        ]);
+        User::create([
+            'no_pelanggan'  => 'PAM0002',
+            'name'          => 'Mujiyono',
+            'email'         => 'mujiyono@gmail.com',
             'no_hp'         => '081229248179',
             'tgl_pasang'    => '2023-10-16',
             'password'      => bcrypt('1234'),
@@ -91,5 +101,18 @@ class DatabaseSeeder extends Seeder
             'beban'     => '5000',
             'denda'     => '5000'
         ]);
+
+        Periode::create([
+            'periode'   => 'Oktober 2023',
+            'bulan_id'  => 10,
+            'tahun_id'  => 2,
+            'status'    => 'Aktif'
+        ]);
+        Periode::create([
+            'periode'   => 'November 2023',
+            'bulan_id'  => 11,
+            'tahun_id'  => 2,
+        ]);
+        
     }
 }

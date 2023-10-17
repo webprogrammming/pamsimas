@@ -19,8 +19,7 @@ return new class extends Migration
             $table->bigInteger('jumlah_pembayaran')->nullable();
             $table->date('batas_bayar');
             $table->foreignId('user_id');
-            $table->foreignId('bulan_id');
-            $table->foreignId('tahun_id');
+            $table->foreignId('periode_id');
             $table->enum('status', ['belum dibayar', 'pending', 'lunas'])->default('belum dibayar');
             $table->timestamps();
         });

@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pembayarans', function (Blueprint $table) {
+        Schema::create('periodes', function (Blueprint $table) {
             $table->id();
-            $table->string('kd_pembayaran')->unique();
-            $table->string('tgl_bayar');
-            $table->double('uang_cash');
-            $table->double('kembalian');
-            $table->foreignId('pemakaian_id');
+            $table->string('periode');
+            $table->foreignId('bulan_id');
+            $table->foreignId('tahun_id');
+            $table->enum('status', ['aktif', 'tidak aktif'])->default('tidak aktif');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pembayarans');
+        Schema::dropIfExists('periodes');
     }
 };

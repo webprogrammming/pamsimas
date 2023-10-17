@@ -33,6 +33,14 @@
             <span class="hide-menu">Data Master</span>
           </li>
           <li class="sidebar-item">
+            <a class="sidebar-link" href="/periode" aria-expanded="false">
+              <span>
+                <i class="ti ti-droplet-filled"></i>
+              </span>
+              <span class="hide-menu">Periode Pemakaian</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
             <a class="sidebar-link" href="/pelanggan" aria-expanded="false">
               <span>
                 <i class="ti ti-users"></i>
@@ -62,6 +70,14 @@
           <li class="nav-small-cap">
             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
             <span class="hide-menu">Pemakaian</span>
+          </li>
+          <li class="sidebar-item">
+            <a class="sidebar-link" href="/lihat-pemakaian" aria-expanded="false">
+              <span>
+                <i class="ti ti-brand-tinder"></i>
+              </span>
+              <span class="hide-menu">Lihat Pemakaian</span>
+            </a>
           </li>
           <li class="sidebar-item">
             <a class="sidebar-link" href="/catat-pemakaian" aria-expanded="false">

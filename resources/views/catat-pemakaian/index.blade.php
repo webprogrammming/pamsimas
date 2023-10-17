@@ -46,18 +46,10 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="mb-3">
-                                    <label for="bulan_id" class="form-label">Periode Bulan</label>
-                                    <select class="form-select" name="bulan_id" aria-label="Default select example">
-                                        @foreach ($bulans as $bulan)
-                                            <option value="{{ $bulan->id }}">{{ $bulan->bulan }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="tahun_id" class="form-label">Periode Tahun</label>
-                                    <select class="form-select" name="tahun_id" aria-label="Default select example">
-                                        @foreach ($tahuns as $tahun)
-                                            <option value="{{ $bulan->id }}">{{ $tahun->tahun }}</option>
+                                    <label for="periode_id" class="form-label">Periode Pemakaian</label>
+                                    <select class="form-select" name="periode_id" aria-label="Default select example">
+                                        @foreach ($periodes as $periode)
+                                            <option value="{{ $periode->id }}">{{ $periode->periode }}</option>
                                         @endforeach
                                     </select>
                                 </div>

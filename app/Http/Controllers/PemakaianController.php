@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Bulan;
-use App\Models\Tahun;
+use App\Models\periode;
 use App\Models\Tarif;
+use App\Models\Pemakaian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
-use App\Models\Pemakaian;
 use Illuminate\Support\Facades\Validator;
 
 class PemakaianController extends Controller
@@ -18,8 +17,7 @@ class PemakaianController extends Controller
     {
         return view('catat-pemakaian.index', [
             'users'     => User::where('role_id', '2')->get(),
-            'bulans'    => Bulan::all(),
-            'tahuns'    => Tahun::all()
+            'periodes'  => Periode::where('status', 'Aktif')->get()
         ]);
     }
 
@@ -30,15 +28,13 @@ class PemakaianController extends Controller
             'penggunaan_akhir'  => 'required',
             'jumlah_penggunaan' => 'required',
             'user_id'           => 'required',
-            'bulan_id'          => 'required',
-            'tahun_id'          => 'required',
+            'periode_id'        => 'required',
         ], [
             'penggunaan_awal.required'  => 'Form wajib diisi !',
             'penggunaan_akhir.required' => 'Form wajib diisi !',
             'jumlah_penggunaan.required'=> 'Form wajib diisi !',
             'user_id.required'          => 'Form wajib diisi !',
-            'bulan_id.required'         => 'Form wajib diisi !',
-            'tahun_id.required'         => 'Form wajib diisi !',
+            'periode_id.required'       => 'Form wajib diisi !',
         ]);
 
         if ($validator->fails()) {
