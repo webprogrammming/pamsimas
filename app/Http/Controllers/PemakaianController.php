@@ -41,6 +41,14 @@ class PemakaianController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
+        $existingEntry = Pemakaian::where('periode_id', $request->periode_id)
+            ->where('user_id', $request->user_id)
+            ->first();
+
+        if ($existingEntry) {
+            return back()->with('error', 'Pemakaian sudah dicatat untuk pengguna ini dalam periode yang sama.');
+        }
+
         $tarif              = Tarif::first();
         $jumlah_penggunaan  = $request->jumlah_penggunaan;
         $m3                 = $tarif->m3;

@@ -108,6 +108,7 @@ class PeriodeController extends Controller
      */
     public function destroy(Periode $periode)
     {
-        //
+        $periode->delete();
+        return redirect()->back()->with('success', 'Berhasil menghapus data periode !');
     }
 }

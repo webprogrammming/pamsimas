@@ -22,8 +22,7 @@
                     <div id="alert-error" class="alert alert-danger" style="display: none" role="alert">
                         Error saat melakukan Transaksi
                     </div>
-                    
-                    
+
                     <form id="pembayaran-form">
                         @csrf
                         <div class="row">
@@ -120,7 +119,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+                        <button type="button" class="btn btn-success m-1 float-end" id="print-receipt">Print Struk</button>
                         <button type="button" class="btn btn-primary m-1 float-end" id="simpan-button">Bayar</button>
                     </form>
                    
@@ -241,7 +240,6 @@
                     $('#kembalian').val("");
                 }
             }
-
             $('#uang_cash').on('input', function() {
                 updateKembalian();
             });
@@ -261,12 +259,45 @@
                     data: formData,
                     success: function(response){
                         $('#alert-success').show();
+                        setTimeout(function(){
+                            $('#alert-error').hide();
+                        }, 3000);
                     },
                     error: function(error) {
                         $('#alert-error').show();
+                        setTimeout(function(){
+                            $('#alert-error').hide();
+                        }, 3000);
                     }
                 });
             });
+        });
+    </script>
+
+
+    <script>
+        document.getElementById('print-receipt').addEventListener('click', function() {
+            var paymentId = $('#pemakaian_id').val();
+
+            var detailPenggunaan    = document.getElementById('detail_penggunaan').textContent;
+            var tarifM3             = document.getElementById('m3').textContent;
+            var tarifBeban          = document.getElementById('beban').textContent;
+            var denda               = document.getElementById('denda').textContent;
+            var subTotal            = document.getElementById('jumlah_pembayaran').textContent;
+
+            if (paymentId) {
+                window.location.href = '/pembayaran/bukti-pembayaran/' + paymentId + 
+                    '?detail_penggunaan=' + detailPenggunaan + 
+                    '&tarif_m3=' + tarifM3 + 
+                    '&tarif_beban=' + tarifBeban + 
+                    '&denda=' + denda + 
+                    '&jumlah_pembayaran=' + subTotal;
+            } else {
+                $('#alert-error').show();
+                    setTimeout(function(){
+                        $('#alert-error').hide();
+                }, 3000);
+            }
         });
     </script>
 

@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/pembayaran', [PembayaranController::class, 'bayar']);
     Route::get('/pembayaran/get-data/{user_id}/{periode_id}', [PembayaranController::class, 'getData']);
     Route::get('/tarif/get-data/{user_id}', [PembayaranController::class, 'getTarifData']);
+    Route::get('/pembayaran/bukti-pembayaran/{id}', [PembayaranController::class, 'printBuktiPembayaran']);
 });
 
 require __DIR__.'/auth.php';
