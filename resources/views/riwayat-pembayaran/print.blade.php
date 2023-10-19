@@ -81,17 +81,17 @@
                 <tr>
                     <td><b>Penggunaan Awal</b></td>
                     <td>:</td>
-                    <td>{{ $pemakaian->penggunaan_awal }} m³</td>
+                    <td>{{ $pembayaran->pemakaian->penggunaan_awal }} m³</td>
                 </tr>
                 <tr>
                     <td><b>Penggunaan Akhir</b></td>
                     <td>:</td>
-                    <td>{{ $pemakaian->penggunaan_akhir }} m³</td>
+                    <td>{{ $pembayaran->pemakaian->penggunaan_akhir }} m³</td>
                 </tr>
                 <tr>
                     <td><b>Penggunaan m³</b></td>
                     <td>:</td>
-                    <td>{{ $pemakaian->jumlah_penggunaan  }} m³</td>
+                    <td>{{ $pembayaran->pemakaian->jumlah_penggunaan  }} m³</td>
                     <hr>
                 </tr>
 
@@ -102,22 +102,22 @@
                 <tr>
                     <td><strong>Biaya per-m³</strong></td>
                     <td>:</td>
-                    <td>Rp. {{ number_format($tarif_m3, 2, ',', '.') }}</td>
+                    <td>Rp. {{ number_format($tarif->m3, 2, ',', '.') }}</td>
                 </tr>
                 <tr>
                     <td><strong>Biaya Beban</strong></td>
                     <td>:</td>
-                    <td>Rp. {{ number_format($tarif_beban, 2, ',', '.') }}</td>
+                    <td>Rp. {{ number_format($tarif->beban, 2, ',', '.') }}</td>
                 </tr>
                 <tr>
                     <td><strong>Denda</strong></td>
                     <td>:</td>
-                    <td>Rp. {{ number_format($denda, 2, ',', '.') }}</td>
+                    <td>Rp. {{ number_format($pembayaran->denda, 2, ',', '.') }}</td>
                 </tr>
                 <tr>
                     <td><strong>Sub-Total</strong></td>
                     <td>:</td>
-                    <td>Rp. {{ number_format($subTotal, 2, ',', '.') }}</td>
+                    <td>Rp. {{ number_format($pembayaran->subTotal, 2, ',', '.') }}</td>
                 </tr>
 
                 <tr>

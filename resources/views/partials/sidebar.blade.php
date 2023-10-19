@@ -103,7 +103,7 @@
             </a>
           </li>
           <li class="sidebar-item">
-            <a class="sidebar-link" href="/riwayat" aria-expanded="false">
+            <a class="sidebar-link" href="/riwayat-pembayaran" aria-expanded="false">
               <span>
                 <i class="ti ti-history"></i>
               </span>

@@ -27,10 +27,12 @@ class TarifController extends Controller
         $tarif = Tarif::find($id);
         $validator = Validator::make($request->all(), [
             'm3'    => 'required',
-            'beban' => 'required'
+            'beban' => 'required',
+            'denda' => 'required'
         ], [
             'm3'    => 'Form wajib diisi !',
-            'beban' => 'Form wajib diisi !'
+            'beban' => 'Form wajib diisi !',
+            'denda' => 'Form denda wajib diisi !'
         ]);
 
         if ($validator->fails()) {
@@ -40,6 +42,7 @@ class TarifController extends Controller
         $tarif->update([
             'm3'        => $request->m3,
             'beban'     => $request->beban,
+            'denda'     => $request->denda
         ]);
 
         return redirect('/tarif')->with('success', 'Berhasil memperbarui tarif');

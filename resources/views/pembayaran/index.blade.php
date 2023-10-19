@@ -52,19 +52,19 @@
                                     <input type="hidden" id="pemakaian_id" name="pemakaian_id">
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label for="penggunaan_awal" class="form-label">Penggunaan Awal</label>
+                                            <label for="penggunaan_awal" class="form-label">Penggunaan Awal (m³)</label>
                                             <input type="number" class="form-control" name="penggunaan_awal" id="penggunaan_awal" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label for="penggunaan_akhir" class="form-label">Penggunaan Akhir</label>
+                                            <label for="penggunaan_akhir" class="form-label">Penggunaan Akhir (m³)</label>
                                             <input type="number" class="form-control" name="penggunaan_akhir" id="penggunaan_akhir" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label for="jumlah_penggunaan" class="form-label">Total Penggunaan</label>
+                                            <label for="jumlah_penggunaan" class="form-label">Total Penggunaan (m³)</label>
                                             <input type="number" class="form-control" name="jumlah_penggunaan" id="jumlah_penggunaan" disabled> 
                                         </div>
                                     </div>
@@ -108,18 +108,21 @@
                                 </table>
 
                                 <div class="row mt-5">
-                                    <div class="mb-3">
-                                        <label for="uang_cash" class="form-label">Masukan uang Pelanggan</label>
+                                    <label for="uang_cash" class="form-label">Masukan uang Pelanggan</label><br>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1">Rp</span>
                                         <input type="number" class="form-control" name="uang_cash" id="uang_cash">
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="kembalian" class="form-label">Kembalian</label>
+
+                                    <label for="kembalian" class="form-label">Kembalian</label><br>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1">Rp</span>
                                         <input type="number" class="form-control" name="kembalian" id="kembalian" readonly>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-success m-1 float-end" id="print-receipt">Print Struk</button>
+
                         <button type="button" class="btn btn-primary m-1 float-end" id="simpan-button">Bayar</button>
                     </form>
                    
@@ -196,7 +199,7 @@
 
                                 if (tgl_bayar > tanggal_batas_bayar) {
                                     var selisihBulan    = calculateMonthDifference(tgl_bayar, tanggal_batas_bayar);
-                                    var totalDenda      = selisihBulan * 5000;
+                                    var totalDenda      = selisihBulan * denda;
                                     var totalPembayaran = (jumlah_penggunaan * m3) + beban + totalDenda;
 
                                     $('#denda').text(totalDenda);
@@ -230,8 +233,8 @@
     <script>
         $(document).ready(function() {
             function updateKembalian() {
-                var uangCash = parseFloat($('#uang_cash').val());
-                var jumlahPembayaran = parseFloat($('#jumlah_pembayaran').text());
+                var uangCash            = parseFloat($('#uang_cash').val());
+                var jumlahPembayaran    = parseFloat($('#jumlah_pembayaran').text());
         
                 if (!isNaN(uangCash) && !isNaN(jumlahPembayaran)) {
                     var kembalian = uangCash - jumlahPembayaran;
@@ -251,13 +254,28 @@
     <script>
         $(document).ready(function(){
             $('#simpan-button').click(function(){
-                var formData = $('#pembayaran-form').serialize();
+                var token               = $('meta[name="csrf-token"]').attr('content');
+                var tgl_bayar           = $('#tgl_bayar').val();
+                var pemakaianId         = $('#pemakaian_id').val();
+                var uangCash            = $('#uang_cash').val();
+                var kembalian           = $('#kembalian').val();
+                var denda               = $('#denda').text();
+                var jumlah_pembayaran   = $('#jumlah_pembayaran').text();
 
                 $.ajax({
                     type: 'POST',
                     url: '/pembayaran',
-                    data: formData,
+                    data: {
+                        _token: token,
+                        tgl_bayar: tgl_bayar,
+                        pemakaian_id: pemakaianId,
+                        uang_cash: uangCash,
+                        kembalian: kembalian,
+                        denda: denda,
+                        jumlah_pembayaran: jumlah_pembayaran
+                    },
                     success: function(response){
+                        printStruk();
                         $('#alert-success').show();
                         setTimeout(function(){
                             $('#alert-error').hide();
@@ -276,7 +294,7 @@
 
 
     <script>
-        document.getElementById('print-receipt').addEventListener('click', function() {
+        function printStruk(){
             var paymentId = $('#pemakaian_id').val();
 
             var detailPenggunaan    = document.getElementById('detail_penggunaan').textContent;
@@ -298,7 +316,7 @@
                         $('#alert-error').hide();
                 }, 3000);
             }
-        });
+        };
     </script>
 
 @endsection

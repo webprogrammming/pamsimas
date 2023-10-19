@@ -9,6 +9,7 @@ use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PemakaianController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PeriodeController;
+use App\Http\Controllers\RiwayatPembayaranController;
 use App\Models\Pembayaran;
 
 /*
@@ -55,6 +56,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/pembayaran/get-data/{user_id}/{periode_id}', [PembayaranController::class, 'getData']);
     Route::get('/tarif/get-data/{user_id}', [PembayaranController::class, 'getTarifData']);
     Route::get('/pembayaran/bukti-pembayaran/{id}', [PembayaranController::class, 'printBuktiPembayaran']);
+
+    Route::get('/riwayat-pembayaran/get-data', [RiwayatPembayaranController::class, 'getRiwayatPembayaran']);
+    Route::get('/riwayat-pembayaran', [RiwayatPembayaranController::class, 'index']);
+    Route::get('/riwayat-pembayaran/print/{id}', [RiwayatPembayaranController::class, 'print']);
 });
 
 require __DIR__.'/auth.php';

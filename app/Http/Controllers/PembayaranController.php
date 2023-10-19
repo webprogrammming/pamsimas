@@ -56,13 +56,18 @@ class PembayaranController extends Controller
         $tgl_bayar      = $request->input('tgl_bayar');
         $uang_cash      = $request->input('uang_cash');
         $kembalian      = $request->input('kembalian');
+        $denda          = $request->input('denda');
+        $subTotal       = $request->input('jumlah_pembayaran');
 
         $pembayaran = new Pembayaran();
         $pembayaran->kd_pembayaran   = $kd_pembayaran;
         $pembayaran->tgl_bayar       = $tgl_bayar;
-        $pembayaran->pemakaian_id    = $pemakaian_id;    
+        $pembayaran->pemakaian_id    = $pemakaian_id;  
+        $pembayaran->denda           = $denda;
+        $pembayaran->subTotal        = $subTotal;
         $pembayaran->uang_cash       = $uang_cash;
         $pembayaran->kembalian       = $kembalian;
+
         $pembayaran->save();
 
         $pemakaian = Pemakaian::find($pemakaian_id);
@@ -87,22 +92,21 @@ class PembayaranController extends Controller
             return abort(404);
         }
 
-        // Ambil data detail penggunaan dari parameter URL
-        $detailPenggunaan = $request->query('detail_penggunaan');
-        $tarifM3 = $request->query('tarif_m3');
-        $tarifBeban = $request->query('tarif_beban');
-        $denda = $request->query('denda');
-        $subTotal = $request->query('jumlah_pembayaran');
+        $detailPenggunaan   = $request->query('detail_penggunaan');
+        $tarifM3            = $request->query('tarif_m3');
+        $tarifBeban         = $request->query('tarif_beban');
+        $denda              = $request->query('denda');
+        $subTotal           = $request->query('jumlah_pembayaran');
 
         $pdf = PDF::loadView('pembayaran.bukti-pembayaran', [
-            'pemakaian'     => $pemakaian,
-            'pembayaran'    => $pembayaran->first(),
+            'pemakaian'         => $pemakaian,
+            'pembayaran'        => $pembayaran->first(),
             'detail_penggunaan' => $detailPenggunaan,
-            'tarif_m3' => $tarifM3,
-            'tarif_beban' => $tarifBeban,
-            'denda' => $denda,
-            'subTotal'  => $subTotal,
-        ]);
+            'tarif_m3'          => $tarifM3,
+            'tarif_beban'       => $tarifBeban,
+            'denda'             => $denda,
+            'subTotal'          => $subTotal,
+        ]); 
         return $pdf->stream('bukti-pembayaran.pdf');
     }
 
