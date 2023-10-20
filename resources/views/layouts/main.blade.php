@@ -10,6 +10,11 @@
   <link rel="stylesheet" href="/assets/css/styles.min.css" />
   <meta name="csrf-token" content="{{ csrf_token() }}" />
 
+  <script type="text/javascript"
+    src="https://app.stg.midtrans.com/snap/snap.js"
+    data-client-key="{{ config('midtrans.client.key') }}">
+  </script>
+
   <!-- Jquery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
@@ -28,6 +33,7 @@
 
   <!-- Appex -->
   <script src="/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+ 
 </head>
 
 <body>
@@ -72,6 +78,8 @@
 			})
 		});
 	</script>
+
+  
 </body>
 
 </html>

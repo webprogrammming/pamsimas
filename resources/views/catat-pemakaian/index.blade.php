@@ -31,6 +31,7 @@
                                 <div class="mb-3">
                                     <label for="user_id" class="form-label">Pilih Nama Pelanggan</label>
                                     <select class="js-example-basic-single" name="user_id" style="width: 100%;">
+                                        <option selected value="">-- Pilih Pelanggan --</option>
                                         @foreach ($users as $user)
                                             <option value="{{ $user->id }}">{{ $user->no_pelanggan }} | {{ $user->name }}</option>
                                         @endforeach
@@ -38,11 +39,15 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="penggunaan_awal" class="form-label">Penggunaan Awal</label>
-                                    <input type="number" class="form-control" name="penggunaan_awal" id="penggunaan_awal">
+                                    <input type="number" class="form-control" name="penggunaan_awal" id="penggunaan_awal" readonly>
                                 </div>
                                 <div class="mb-3">
                                     <label for="penggunaan_akhir" class="form-label">Penggunaan Akhir</label>
                                     <input type="number" class="form-control" name="penggunaan_akhir" id="penggunaan_akhir">
+                                    @error('penggunaan_akhir')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+
                                 </div>
                                 <div class="mb-3">
                                     <label for="jumlah_penggunaan" class="form-label">Jumlah Penggunaan</label>
@@ -57,10 +62,16 @@
                                             <option value="{{ $periode->id }}">{{ $periode->periode }}</option>
                                         @endforeach
                                     </select>
+                                    @error('periode_id')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="batas_bayar" class="form-label">Tanggal Batas Pembayaran</label>
                                     <input type="date" class="form-control" name="batas_bayar" id="batas_bayar">
+                                    @error('batas_bayar')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -76,6 +87,23 @@
     <script>
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
+
+            $('.js-example-basic-single').change(function(){
+                var user_id     = $(this).val();
+                
+                $.ajax({
+                    url: '/catat-pemakaian/get-data/' + user_id,
+                    type: 'GET',
+                    success: function(data){
+                        console.log(data);
+                        $('penggunaan_akhir').val(data.penggunaan_akhir);
+
+                        var penggunaan_akhir    = parseFloat(data.penggunaan_akhir) || 0;
+
+                        $('#penggunaan_awal').val(penggunaan_akhir);
+                    }
+                });
+            });
         });
     </script>
 

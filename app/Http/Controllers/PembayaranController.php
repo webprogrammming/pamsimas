@@ -29,8 +29,7 @@ class PembayaranController extends Controller
             ->where('periode_id', $periode_id)
             ->with('bulan')
             ->first();
-            
-    
+
         return response()->json($dataPemakaian);
     }
 

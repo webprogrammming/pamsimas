@@ -24,13 +24,16 @@ class RiwayatPembayaranController extends Controller
         $pembayaran = Pembayaran::query();
 
         if($tanggalMulai && $tanggalSelesai){
-            $pembayaran->whereBetween('tgl_bayar', [$tanggalMulai, $tanggalSelesai]);
+            $pembayaran->whereBetween('tgl_bayar', [$tanggalMulai, $tanggalSelesai])
+                    ->orderBy('id', 'DESC');
         }
 
         $data = $pembayaran->with('pemakaian.user')->get();
 
         if(empty($tanggalMulai) && empty($tanggalSelesai)){
-            $data = Pembayaran::with('pemakaian.user')->get();
+            $data = Pembayaran::with('pemakaian.user')
+                    ->orderBy('id', 'DESC')
+                    ->get();
         }
         
         return response()->json($data);
