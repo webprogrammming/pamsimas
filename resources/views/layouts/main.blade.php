@@ -11,7 +11,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}" />
 
   <script type="text/javascript"
-    src="https://app.stg.midtrans.com/snap/snap.js"
+    src="https://app.sandbox.midtrans.com/snap/snap.js"
     data-client-key="{{ config('midtrans.client.key') }}">
   </script>
 

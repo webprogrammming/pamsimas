@@ -30,7 +30,18 @@
                                 <td>:</td>
                                 <td>{{ $tagihan->periode->periode }}</td>
                             </tr>
-    
+
+                            <tr>
+                                <td><b>Status Pembayaran</b></td>
+                                <td>:</td>
+                                <td>
+                                    @if ($tagihan->status === 'belum dibayar')
+                                        <span class="badge text-bg-warning p-2">{{ $tagihan->status }}</span>
+                                    @else
+                                        <span class="badge text-bg-success p-2">{{ $tagihan->status }}</span>
+                                    @endif
+                                </td>
+                            </tr>
                             <tr>
                                 <td><b>Penggunaan Awal m³</b></td>
                                 <td>:</td>
@@ -67,13 +78,12 @@
                                 <td>Rp. <span id="jumlah_pembayaran">{{ $tagihan->jumlah_pembayaran }}</span></td>
                             </tr>
                         </table>
+                        <div class="button p-5">
+                            <button type="button" class="btn btn-success m-1 float-end" id="bayar">Bayar Sekarang</button>
+                        </div>
                     </div>
     
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-success m-1 float-end" id="bayar">Bayar Sekarang</button>
-                    </div>
                 </form>
-                <button id="pay-button">Pay!</button>
             </div>
         </div>
     </div>
@@ -120,62 +130,62 @@
         document.getElementById('tgl_bayar').value = formattedDate;
     </script>
 
+    
     <script>
-        $(document).ready(function(){
-            $('#bayar').click(function(){
-                var token               = $('meta[name="csrf-token"]').attr('content');
-                var tgl_bayar           = $('#tgl_bayar').val();
-                var pemakaianId         = $('#pemakaian_id').val();
-                var denda               = $('#denda').text();
-                var jumlah_pembayaran   = $('#jumlah_pembayaran').text();
+$(document).ready(function() {
+    $('#bayar').click(function() {
+        var token = $('meta[name="csrf-token"]').attr('content');
+        var tgl_bayar = $('#tgl_bayar').val();
+        var pemakaianId = $('#pemakaian_id').val();
+        var denda = $('#denda').text();
+        var jumlah_pembayaran = $('#jumlah_pembayaran').text();
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/cek-tagihan/bayar',
-                    data: {
-                        _token: token,
-                        tgl_bayar: tgl_bayar,
-                        pemakaian_id: pemakaianId,
-                        denda: denda,
-                        jumlah_pembayaran: jumlah_pembayaran
+        // Kirim data ke server untuk mendapatkan snapToken
+        $.ajax({
+            type: 'POST',
+            url: '/cek-tagihan/bayar',
+            data: {
+                _token: token,
+                tgl_bayar: tgl_bayar,
+                pemakaian_id: pemakaianId,
+                denda: denda,
+                jumlah_pembayaran: jumlah_pembayaran
+            },
+            success: function(response) {
+                // Extract the Snap token from the response
+                var snapToken = response.snapToken;
+
+                // Trigger snap popup.
+                window.snap.pay(snapToken, {
+                    onSuccess: function(result) {
+                        /* You may add your own implementation here */
+                        alert("payment success!");
+                        console.log(result);
                     },
-                    success: function(response){
-                        console.log(response);
+                    onPending: function(result) {
+                        /* You may add your own implementation here */
+                        alert("waiting for your payment!");
+                        console.log(result);
                     },
-                    error: function(error) {
-                        console.log(error);
+                    onError: function(result) {
+                        /* You may add your own implementation here */
+                        alert("payment failed!");
+                        console.log(result);
+                    },
+                    onClose: function() {
+                        /* You may add your own implementation here */
+                        alert('you closed the popup without finishing the payment');
                     }
                 });
-            });
+            },
+            error: function(error) {
+                console.log(error);
+            }
         });
+    });
+});
+
     </script>
 
-    <script type="text/javascript">
-        // For example trigger on button clicked, or any time you need
-        var payButton = document.getElementById('pay-button');
-            payButton.addEventListener('click', function () {
-            // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token.
-            // Also, use the embedId that you defined in the div above, here.
-            window.snap.embed('{!! $snapToken !!}', {
-                embedId: 'snap-container',
-                onSuccess: function (result) {
-                /* You may add your own implementation here */
-                alert("payment success!"); console.log(result);
-                },
-                onPending: function (result) {
-                /* You may add your own implementation here */
-                alert("wating your payment!"); console.log(result);
-                },
-                onError: function (result) {
-                /* You may add your own implementation here */
-                alert("payment failed!"); console.log(result);
-                },
-                onClose: function () {
-                /* You may add your own implementation here */
-                alert('you closed the popup without finishing the payment');
-                }
-            });
-        });
-    </script>
 
 @endsection

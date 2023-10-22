@@ -75,6 +75,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/cek-tagihan', [CekTagihanPelangganController::class, 'index']);
         Route::get('/cek-tagihan/{id}', [CekTagihanPelangganController::class, 'detailTagihan']);
         Route::post('/cek-tagihan/bayar', [CekTagihanPelangganController::class, 'bayar']);
+        Route::post('/midtrans-callback', [CekTagihanPelangganController::class, 'callback']);
     });
 
 });
