@@ -23,7 +23,9 @@ class PemakaianController extends Controller
 
     public function getData($user_id)
     {
-        $dataPenggunaan = Pemakaian::where('user_id', $user_id)->first();
+        $dataPenggunaan = Pemakaian::where('user_id', $user_id)
+            ->latest('created_at')
+            ->first();
         return response()->json($dataPenggunaan);
     }
 

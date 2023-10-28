@@ -183,6 +183,14 @@
                 <span class="hide-menu">Cek Tagihan</span>
               </a>
             </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/tagihan-terbayar" aria-expanded="false">
+                <span>
+                  <i class="ti ti-discount-check"></i>
+                </span>
+                <span class="hide-menu">Tagihan Terbayar</span>
+              </a>
+            </li>
           </ul>
 
         </nav>

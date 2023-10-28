@@ -12,6 +12,7 @@ use App\Http\Controllers\PemakaianPelangganController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\RiwayatPembayaranController;
+use App\Http\Controllers\TagihanTerbayarController;
 use App\Models\Pembayaran;
 
 /*
@@ -75,7 +76,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/cek-tagihan', [CekTagihanPelangganController::class, 'index']);
         Route::get('/cek-tagihan/{id}', [CekTagihanPelangganController::class, 'detailTagihan']);
         Route::post('/cek-tagihan/bayar', [CekTagihanPelangganController::class, 'bayar']);
-        Route::post('/midtrans-callback', [CekTagihanPelangganController::class, 'callback']);
+
+        Route::get('/tagihan-terbayar/get-data', [TagihanTerbayarController::class, 'getRiwayatPembayaran']);
+        Route::get('/tagihan-terbayar', [TagihanTerbayarController::class, 'index']);
+        Route::get('/tagihan-terbayar/print/{id}', [TagihanTerbayarController::class, 'print']);
     });
 
 });

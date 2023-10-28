@@ -11,7 +11,6 @@ class PemakaianPelangganController extends Controller
     public function index()
     {
         $user = auth()->user()->id;
-
         return view('pemakaian-pelanggan.index', [
             'pemakaians'    => Pemakaian::where('user_id', $user)
                                 ->orderBy('id', 'DESC')

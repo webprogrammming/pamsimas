@@ -8,6 +8,7 @@ use App\Models\Tarif;
 use App\Models\Pemakaian;
 use App\Models\Pembayaran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 class CekTagihanPelangganController extends Controller
@@ -38,10 +39,11 @@ class CekTagihanPelangganController extends Controller
     {
         $kd_pembayaran  = 'INV-' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
         $pemakaian_id   = $request->input('pemakaian_id');
-        $tgl_bayar      = $request->input('tgl_bayar');
+        $tgl_bayar      = now();
         $denda          = $request->input('denda');
         $subTotal       = $request->input('jumlah_pembayaran');
         $uang_cash      = $request->input('jumlah_pembayaran');
+        $kembalian      = 0;
 
         $pembayaran     = new Pembayaran();
         $pembayaran->kd_pembayaran   = $kd_pembayaran;
@@ -50,6 +52,7 @@ class CekTagihanPelangganController extends Controller
         $pembayaran->denda           = $denda;
         $pembayaran->subTotal        = $subTotal;
         $pembayaran->uang_cash       = $uang_cash;
+        $pembayaran->kembalian       = $kembalian;
 
         // Set your Merchant Server Key
         \Midtrans\Config::$serverKey = config('midtrans.server_key');
@@ -66,22 +69,26 @@ class CekTagihanPelangganController extends Controller
                 'gross_amount'  => $subTotal,
             ),
             'customer_details' => array(
-                'first_name' => auth()->user()->name,
-                'phone' => auth()->user()->no_hp,
+                'first_name'    => auth()->user()->name,
+                'phone'         => auth()->user()->no_hp,
             ),
         );
 
         $snapToken = \Midtrans\Snap::getSnapToken($params);
+        $pembayaran->save();
         return response()->json(['snapToken' => $snapToken]);
     }
 
     public function callback(Request $request)
     {
         $serverKey = config('midtrans.server_key');
-        $hashed    = hash("sha512", $request->order_id.$request->gross_amount.$serverKey);
-        if($hashed == $request->signature_key){
-            if($request->transaction_status == 'capture'){
-                $pemakaian = Pemakaian::find($request->order_id);
+        $hashed    = hash("sha512", $request->order_id . $request->gross_amount . $serverKey);
+
+        if ($request->transaction_status == 'capture') {
+            $order_id = $request->order_id;
+            $pemakaian = Pemakaian::findOrFail($order_id);
+
+            if ($pemakaian) {
                 $pemakaian->update(['status' => 'lunas']);
             }
         }

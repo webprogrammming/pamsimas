@@ -13,7 +13,7 @@
                 <div class="card-header bg-primary">
                     <div class="row align-items-center">
                         <div class="col-6">
-                            <h5 class="card-title fw-semibold text-white">Detail Pemakaian {{ $tagihan->user->name }} || {{ $tagihan->user->no_pelanggan }}</h5>
+                            <h5 class="card-title fw-semibold text-white">Detail Pemakaian</h5>
                         </div>
                     </div>
                 </div>
@@ -78,9 +78,12 @@
                                 <td>Rp. <span id="jumlah_pembayaran">{{ $tagihan->jumlah_pembayaran }}</span></td>
                             </tr>
                         </table>
-                        <div class="button p-5">
-                            <button type="button" class="btn btn-success m-1 float-end" id="bayar">Bayar Sekarang</button>
-                        </div>
+                        @if ($tagihan->status == 'belum dibayar')
+                            <div class="button p-5">
+                                <button type="button" class="btn btn-success m-1 float-end" id="bayar">Bayar Sekarang</button>
+                            </div>
+                        @else
+                        @endif
                     </div>
     
                 </form>
@@ -94,7 +97,7 @@
         });
 
         function calculateDenda() {
-            var tanggal_batas_bayar = new Date("{{ $tagihan->batas_bayar }}"); // Ganti dengan tanggal batas bayar yang sesuai
+            var tanggal_batas_bayar = new Date("{{ $tagihan->batas_bayar }}");
             var tgl_bayar = new Date();
 
             if (tgl_bayar > tanggal_batas_bayar) {
@@ -132,59 +135,56 @@
 
     
     <script>
-$(document).ready(function() {
-    $('#bayar').click(function() {
-        var token = $('meta[name="csrf-token"]').attr('content');
-        var tgl_bayar = $('#tgl_bayar').val();
-        var pemakaianId = $('#pemakaian_id').val();
-        var denda = $('#denda').text();
-        var jumlah_pembayaran = $('#jumlah_pembayaran').text();
+        $(document).ready(function() {
+            $('#bayar').click(function() {
+                var token             = $('meta[name="csrf-token"]').attr('content');
+                var tgl_bayar         = $('#tgl_bayar').val();
+                var pemakaianId       = $('#pemakaian_id').val();
+                var denda             = $('#denda').text();
+                var jumlah_pembayaran = $('#jumlah_pembayaran').text();
 
-        // Kirim data ke server untuk mendapatkan snapToken
-        $.ajax({
-            type: 'POST',
-            url: '/cek-tagihan/bayar',
-            data: {
-                _token: token,
-                tgl_bayar: tgl_bayar,
-                pemakaian_id: pemakaianId,
-                denda: denda,
-                jumlah_pembayaran: jumlah_pembayaran
-            },
-            success: function(response) {
-                // Extract the Snap token from the response
-                var snapToken = response.snapToken;
+                $.ajax({
+                    type: 'POST',
+                    url: '/cek-tagihan/bayar',
+                    data: {
+                        _token: token,
+                        tgl_bayar: tgl_bayar,
+                        pemakaian_id: pemakaianId,
+                        denda: denda,
+                        jumlah_pembayaran: jumlah_pembayaran
+                    },
+                    success: function(response) {
+                        var snapToken = response.snapToken;
 
-                // Trigger snap popup.
-                window.snap.pay(snapToken, {
-                    onSuccess: function(result) {
-                        /* You may add your own implementation here */
-                        alert("payment success!");
-                        console.log(result);
+                        window.snap.pay(snapToken, {
+                            onSuccess: function(result) {
+                                /* You may add your own implementation here */
+                                alert("payment success!");
+                                window.location.href = '/tagihan-terbayar';
+                                console.log(result);
+                            },
+                            onPending: function(result) {
+                                /* You may add your own implementation here */
+                                alert("waiting for your payment!");
+                                console.log(result);
+                            },
+                            onError: function(result) {
+                                /* You may add your own implementation here */
+                                alert("payment failed!");
+                                console.log(result);
+                            },
+                            onClose: function() {
+                                /* You may add your own implementation here */
+                                alert('you closed the popup without finishing the payment');
+                            }
+                        });
                     },
-                    onPending: function(result) {
-                        /* You may add your own implementation here */
-                        alert("waiting for your payment!");
-                        console.log(result);
-                    },
-                    onError: function(result) {
-                        /* You may add your own implementation here */
-                        alert("payment failed!");
-                        console.log(result);
-                    },
-                    onClose: function() {
-                        /* You may add your own implementation here */
-                        alert('you closed the popup without finishing the payment');
+                    error: function(error) {
+                        console.log(error);
                     }
                 });
-            },
-            error: function(error) {
-                console.log(error);
-            }
+            });
         });
-    });
-});
-
     </script>
 
 

@@ -25,5 +25,6 @@ class Pemakaian extends Model
     {
         return $this->belongsTo(Periode::class);
     }
+
     
 }
