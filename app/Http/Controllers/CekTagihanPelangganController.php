@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use Midtrans\Snap;
 use Midtrans\Config;
 use App\Models\Tarif;
@@ -37,23 +38,10 @@ class CekTagihanPelangganController extends Controller
 
     public function bayar(Request $request)
     {
-        $kd_pembayaran  = 'INV-' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
         $pemakaian_id   = $request->input('pemakaian_id');
-        $tgl_bayar      = now();
-        $denda          = $request->input('denda');
         $subTotal       = $request->input('jumlah_pembayaran');
-        $uang_cash      = $request->input('jumlah_pembayaran');
-        $kembalian      = 0;
-
-        $pembayaran     = new Pembayaran();
-        $pembayaran->kd_pembayaran   = $kd_pembayaran;
-        $pembayaran->tgl_bayar       = $tgl_bayar;
-        $pembayaran->pemakaian_id    = $pemakaian_id;  
-        $pembayaran->denda           = $denda;
-        $pembayaran->subTotal        = $subTotal;
-        $pembayaran->uang_cash       = $uang_cash;
-        $pembayaran->kembalian       = $kembalian;
-
+       
+        
         // Set your Merchant Server Key
         \Midtrans\Config::$serverKey = config('midtrans.server_key');
         // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
@@ -62,6 +50,7 @@ class CekTagihanPelangganController extends Controller
         \Midtrans\Config::$isSanitized = true;
         // Set 3DS transaction for credit card to true
         \Midtrans\Config::$is3ds = true;
+        
 
         $params = array(
             'transaction_details' => array(
@@ -75,22 +64,71 @@ class CekTagihanPelangganController extends Controller
         );
 
         $snapToken = \Midtrans\Snap::getSnapToken($params);
-        $pembayaran->save();
         return response()->json(['snapToken' => $snapToken]);
     }
 
     public function callback(Request $request)
     {
+        $kd_pembayaran  = 'INV-' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
+        $kembalian      = 0;
+        $tgl_bayar      = now();
+        $denda          = 0; 
+        $tarif          = Tarif::first();
+
         $serverKey = config('midtrans.server_key');
-        $hashed    = hash("sha512", $request->order_id . $request->gross_amount . $serverKey);
+        $hashed    = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $denda . $serverKey);
 
         if ($request->transaction_status == 'capture') {
-            $order_id = $request->order_id;
-            $pemakaian = Pemakaian::findOrFail($order_id);
+            $order_id        = $request->order_id;
+            $gross_amount    = $request->gross_amount;
 
-            if ($pemakaian) {
-                $pemakaian->update(['status' => 'lunas']);
+            $pemakaian = Pemakaian::findOrFail($order_id);
+            $pemakaian->update(['status' => 'lunas']);
+                    
+            $tanggal_batas_bayar = new DateTime($pemakaian->batas_bayar);
+            $tgl_bayar = new DateTime();
+
+            if ($tgl_bayar > $tanggal_batas_bayar) {
+                $selisihBulan    = $this->calculateMonthDifference($tgl_bayar, $tanggal_batas_bayar);
+                $dendaPerBulan   = $tarif->denda; 
+                $denda           = $selisihBulan * $dendaPerBulan;
             }
+
+            $pembayaran     = new Pembayaran();
+            $pembayaran->pemakaian_id    = $pemakaian->id;
+            $pembayaran->kd_pembayaran   = $kd_pembayaran;
+            $pembayaran->tgl_bayar       = $tgl_bayar->format('Y-m-d');
+            $pembayaran->uang_cash       = $gross_amount;
+            $pembayaran->kembalian       = $kembalian;
+            $pembayaran->denda           = $denda;
+            $pembayaran->subTotal        = $gross_amount;
+            $pembayaran->save();
         }
     }
+
+    private function calculateMonthDifference($date1, $date2) {
+        if ($date1 instanceof DateTime) {
+            $start = $date1;
+        } else {
+            $start = new DateTime($date1);
+        }
+
+        if ($date2 instanceof DateTime) {
+            $end = $date2;
+        } else {
+            $end = new DateTime($date2);
+        }
+
+        $interval = $start->diff($end);
+        $years = $interval->y;
+        $months = $interval->m;
+
+        if ($interval->d > 0) {
+            $months += 1; 
+        }
+
+        return $years * 12 + $months;
+    }
+
+
 }

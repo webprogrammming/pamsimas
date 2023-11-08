@@ -47,6 +47,10 @@
                                     <label for="tgl_bayar" class="form-label">Tanggal Hari Ini</label>
                                     <input type="text" class="form-control" name="tgl_bayar" id="tgl_bayar" readonly>
                                 </div>
+
+                                <div class="mb-3">
+                                    <button id="filterButton" class="btn btn-primary">Filter Data</button>
+                                </div>                            
                                 
                                 <div class="row">
                                     <input type="hidden" id="pemakaian_id" name="pemakaian_id">
@@ -148,9 +152,95 @@
         var formattedDate = year + '-' + month + '-' + day;
         document.getElementById('tgl_bayar').value = formattedDate;
     </script>
+
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+
+            $('#filterButton').click(function(e) {
+                e.preventDefault();
+
+                var user_id     = $('select[name="user_id"]').val();
+                var periode_id  = $('#periode_id').val();
+                var csrfToken   = $('meta[name="csrf-token"]').attr('content');
+
+                $.ajax({
+                    url: '/pembayaran/get-data/' + user_id + '/' + periode_id,
+                    type: 'POST',
+                    data: {
+                        _token: csrfToken,
+                        user_id: user_id,
+                        periode_id: periode_id
+                    },
+                    success: function(data){
+                        $('pemakaian_id').val(data.id);
+                        $('penggunaan_awal').val(data.penggunaan_awal);
+                        $('penggunaan_akhir').val(data.penggunaan_akhir);
+                        $('jumlah_penggunaan').val(data.jumlah_penggunaan);
+                        $('jumlah_pembayaran').val(data.jumlah_pembayaran);
+
+                        var id                  = data.id;
+                        var penggunaan_awal     = parseFloat(data.penggunaan_awal) || 0;
+                        var penggunaan_akhir    = parseFloat(data.penggunaan_akhir) || 0;
+                        var jumlah_penggunaan   = parseFloat(data.jumlah_penggunaan) || 0;
+                        var jumlah_pembayaran   = parseFloat(data.jumlah_pembayaran) || 'Tidak Ada Tagihan !';
+
+                        $('#pemakaian_id').val(id);
+                        $('#penggunaan_awal').val(penggunaan_awal);
+                        $('#penggunaan_akhir').val(penggunaan_akhir);
+                        $('#jumlah_penggunaan').val(jumlah_penggunaan);
+                        $('#jumlah_pembayaran').text(jumlah_pembayaran);
+                        $('#detail_penggunaan').text(jumlah_penggunaan);
+                        $('#detail_pembayaran').text(jumlah_pembayaran);
+
+                        $.ajax({
+                            url: '/tarif/get-data/' + user_id, 
+                            type: 'GET',
+                            success: function(tarifData){
+                                $('#m3').val(tarifData.m3);
+                                $('#beban').val(tarifData.beban);
+                                $('#denda').val(tarifData.denda);
+
+                                var m3      = parseFloat(tarifData.m3);
+                                var beban   = parseFloat(tarifData.beban);
+                                var denda   = parseFloat(tarifData.denda);
+
+                                var tanggal_batas_bayar = new Date(data.batas_bayar);
+                                var tgl_bayar           = new Date();
+
+                                if (tgl_bayar > tanggal_batas_bayar) {
+                                    var selisihBulan    = calculateMonthDifference(tgl_bayar, tanggal_batas_bayar);
+                                    var totalDenda      = selisihBulan * denda;
+                                    var totalPembayaran = (jumlah_penggunaan * m3) + beban + totalDenda;
+
+                                    $('#denda').text(totalDenda);
+                                    $('#detail_pembayaran').text(totalPembayaran);
+                                    $('#jumlah_pembayaran').text(totalPembayaran);
+                                } else {
+                                    $('#denda').text('0');
+                                    $('#detail_pembayaran').text(totalPembayaran);
+                                    $('#jumlah_pembayaran').text(totalPembayaran);
+                                }
+
+                                $('#m3').text(m3);
+                                $('#beban').text(beban);
+                            }
+                        });
+
+                        function calculateMonthDifference(date1, date2) {
+                            var diff = (date1.getFullYear() - date2.getFullYear()) * 12;
+                            diff -= date2.getMonth();
+                            diff += date1.getMonth();
+                            return diff <= 0 ? 0 : diff;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
     
     <!-- Select2 & Autocomplet-->
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
 
@@ -227,7 +317,7 @@
 
             });
         });
-    </script>
+    </script> --}}
 
     <!-- Update kembalian -->
     <script>
@@ -292,7 +382,7 @@
         });
     </script>
 
-
+    <!-- Print Bukti Pembayaran -->
     <script>
         function printStruk(){
             var paymentId = $('#pemakaian_id').val();

@@ -101,9 +101,9 @@
             var tgl_bayar = new Date();
 
             if (tgl_bayar > tanggal_batas_bayar) {
-                var selisihBulan = calculateMonthDifference(tgl_bayar, tanggal_batas_bayar);
-                var dendaPerBulan = parseFloat($('#denda').text());
-                var totalDenda = selisihBulan * dendaPerBulan;
+                var selisihBulan    = calculateMonthDifference(tgl_bayar, tanggal_batas_bayar);
+                var dendaPerBulan   = parseFloat($('#denda').text());
+                var totalDenda      = selisihBulan * dendaPerBulan;
                 var totalPembayaran = parseFloat($('#jumlah_pembayaran').text()) + totalDenda;
                 $('#denda').text(totalDenda.toFixed(2));
                 $('#jumlah_pembayaran').text(totalPembayaran.toFixed(2));
@@ -118,7 +118,6 @@
             diff += date1.getMonth();
             return diff <= 0 ? 0 : diff;
         }
-
         calculateDenda();
     </script>
 
@@ -133,7 +132,6 @@
         document.getElementById('tgl_bayar').value = formattedDate;
     </script>
 
-    
     <script>
         $(document).ready(function() {
             $('#bayar').click(function() {
@@ -155,12 +153,10 @@
                     },
                     success: function(response) {
                         var snapToken = response.snapToken;
-
                         window.snap.pay(snapToken, {
                             onSuccess: function(result) {
-                                /* You may add your own implementation here */
                                 alert("payment success!");
-                                window.location.href = '/tagihan-terbayar';
+                                location.reload();
                                 console.log(result);
                             },
                             onPending: function(result) {

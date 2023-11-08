@@ -126,14 +126,6 @@
                 <span class="hide-menu">Laporan Pembayaran</span>
               </a>
             </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="/laporan-keuangan" aria-expanded="false">
-                <span>
-                  <i class="ti ti-report-money"></i>
-                </span>
-                <span class="hide-menu">Laporan Keuangan</span>
-              </a>
-            </li>
           </ul>
 
         </nav>

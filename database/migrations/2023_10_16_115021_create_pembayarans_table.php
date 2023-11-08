@@ -19,7 +19,8 @@ return new class extends Migration
             $table->double('kembalian');
             $table->double('denda');
             $table->double('subTotal');
-            $table->foreignId('pemakaian_id');
+            $table->uuid('pemakaian_id');
+            $table->foreign('pemakaian_id')->references('id')->on('pemakaians');
             $table->timestamps();
         });
     }

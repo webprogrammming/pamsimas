@@ -7,7 +7,10 @@
                 <div class="card-header bg-primary">
                     <div class="row align-items-center">
                         <div class="col-6">
-                            <h5 class="card-title fw-semibold text-white">Riwayat Pembayaran</h5>
+                            <h5 class="card-title fw-semibold text-white">Laporan Pembayaran</h5>
+                        </div>
+                        <div class="col-6">
+                            <a href="javascript:void(0)" id="print-laporan-pembayaran" target="_blank" class="btn btn-warning float-end">Print PDF</a>
                         </div>
                     </div>
                 </div>
@@ -47,7 +50,6 @@
                                     <th>Tgl. Bayar</th>
                                     <th>Pelanggan</th>
                                     <th>Sub Total</th>
-                                    <th>Print Struk</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -106,7 +108,6 @@
                                     <td>${formattedDate}</td>
                                     <td>${value.pemakaian.user.name}</td>
                                     <td>${subTotal}</td>
-                                    <td><a href="/riwayat-pembayaran/print/${value.id}" class="btn btn-success">Struk</a></td>
                                 </tr>
                             `;
                             table.row.add($(riwayatPembayaran)).draw(false);
@@ -122,18 +123,19 @@
             loadData();
         }
 
-        // $('#print-laporan-laba-kotor').on('click', function(){
-        //     var tanggalMulai    = $('#tanggal_mulai').val();
-        //     var tanggalSelesai  = $('#tanggal_selesai').val();
+        $('#print-laporan-pembayaran').on('click', function(){
+            var tanggalMulai    = $('#tanggal_mulai').val();
+            var tanggalSelesai  = $('#tanggal_selesai').val();
 
-        //     var url = '/laporan-laba-kotor/print-laba-kotor';
+            var url = '/laporan-pembayaran/print-pembayaran';
 
-        //     if(tanggalMulai && tanggalSelesai){
-        //         url += '?tanggal_mulai=' + tanggalMulai + '&tanggal_selesai=' + tanggalSelesai;
-        //     }
+            if(tanggalMulai && tanggalSelesai){
+                url += '?tanggal_mulai=' + tanggalMulai + '&tanggal_selesai=' + tanggalSelesai;
+            }
 
-        //     window.location.href = url;
-        // });
+            window.location.href = url;
+        });
+
     });
 </script>
 @endsection

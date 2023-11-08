@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Bulan;
+use App\Models\Pemakaian;
 use App\Models\Periode;
 use App\Models\Tahun;
 use App\Models\Tarif;
@@ -103,6 +104,12 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Periode::create([
+            'periode'   => 'September 2023',
+            'bulan_id'  => 9,
+            'tahun_id'  => 2,
+            'status'    => 'Aktif'
+        ]);
+        Periode::create([
             'periode'   => 'Oktober 2023',
             'bulan_id'  => 10,
             'tahun_id'  => 2,
@@ -112,7 +119,7 @@ class DatabaseSeeder extends Seeder
             'periode'   => 'November 2023',
             'bulan_id'  => 11,
             'tahun_id'  => 2,
+            'status'    => 'Aktif'
         ]);
-        
     }
 }

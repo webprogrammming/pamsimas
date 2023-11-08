@@ -16,8 +16,8 @@ class PemakaianController extends Controller
     public function index()
     {
         return view('catat-pemakaian.index', [
-            'users'             => User::where('role_id', '2')->get(),
-            'periodes'          => Periode::where('status', 'Aktif')->get(),
+            'users'        => User::where('role_id', '2')->get(),
+            'periodes'     => Periode::where('status', 'Aktif')->get(),
         ]);
     }
 
@@ -64,6 +64,7 @@ class PemakaianController extends Controller
         $jumlah_pembayaran  = ($jumlah_penggunaan * $m3) + $beban;
 
         $data = $request->all();
+
         $data['jumlah_pembayaran']  = $jumlah_pembayaran;
 
         Pemakaian::create($data);

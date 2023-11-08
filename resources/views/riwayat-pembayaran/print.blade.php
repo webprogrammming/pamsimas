@@ -135,7 +135,7 @@
                     <td>Rp. {{ number_format($pembayaran->kembalian, 2, ',', '.') }}</td>
                 </tr>
             </table>
-            <p class="lunas" style="text-align: center"><b>LUNAS !!!</b></p>
+            <p class="lunas" style="text-align: center">Periode {{ $pembayaran->pemakaian->periode->periode }} <b>LUNAS !!!</b></p>
         </div>
     </div>
 </body>

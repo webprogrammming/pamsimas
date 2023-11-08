@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CekTagihanPelangganController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LaporanPembayaranController;
 use App\Http\Controllers\LihatPemakaianController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TahunController;
@@ -33,9 +35,8 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::group(['middleware' => 'CheckRole:admin,pelanggan'], function(){
-        Route::get('/', function () {
-            return view('/dashboard');
-        });
+        Route::get('/', [DashboardController::class, 'index']);
+        Route::get('/dashboard', [DashboardController::class, 'index']);
     });
 
     Route::group(['middleware' => 'CheckRole:admin'], function(){
@@ -61,13 +62,17 @@ Route::middleware('auth')->group(function () {
     
         Route::get('/pembayaran', [PembayaranController::class, 'index']);
         Route::post('/pembayaran', [PembayaranController::class, 'bayar']);
-        Route::get('/pembayaran/get-data/{user_id}/{periode_id}', [PembayaranController::class, 'getData']);
+        Route::post('/pembayaran/get-data/{user_id}/{periode_id}', [PembayaranController::class, 'getData']);
         Route::get('/tarif/get-data/{user_id}', [PembayaranController::class, 'getTarifData']);
         Route::get('/pembayaran/bukti-pembayaran/{id}', [PembayaranController::class, 'printBuktiPembayaran']);
     
         Route::get('/riwayat-pembayaran/get-data', [RiwayatPembayaranController::class, 'getRiwayatPembayaran']);
         Route::get('/riwayat-pembayaran', [RiwayatPembayaranController::class, 'index']);
         Route::get('/riwayat-pembayaran/print/{id}', [RiwayatPembayaranController::class, 'print']);
+    
+        Route::get('/laporan-pembayaran/get-data', [LaporanPembayaranController::class, 'getLaporanPembayaran']);
+        Route::get('/laporan-pembayaran', [LaporanPembayaranController::class, 'index']);
+        Route::get('/laporan-pembayaran/print-pembayaran', [LaporanPembayaranController::class, 'printLaporanPembayaran']);
     });
 
     Route::group(['middleware'  => 'CheckRole:pelanggan'], function(){
