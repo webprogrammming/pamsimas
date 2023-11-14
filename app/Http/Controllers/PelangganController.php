@@ -14,7 +14,7 @@ class PelangganController extends Controller
     public function index()
     {
         return view('pelanggan.index', [
-            'pelanggans'     => User::where('role_id', 2)->orderBy('id', 'DESC')->get()
+            'pelanggans'     => User::where('role_id', 3)->orderBy('id', 'DESC')->get()
         ]);
     }
 

@@ -27,13 +27,19 @@ class DatabaseSeeder extends Seeder
             'role_id'   => 1
         ]);
         User::create([
+            'name'      => 'petugas',
+            'email'     => 'petugas@gmail.com',
+            'password'  => bcrypt('1234'),
+            'role_id'   => 2
+        ]);
+        User::create([
             'no_pelanggan'  => 'PAM0001',
             'name'          => 'Dwi Purnomo',
             'email'         => 'purnomodwi174@gmail.com',
             'no_hp'         => '081229248179',
             'tgl_pasang'    => '2023-10-16',
             'password'      => bcrypt('1234'),
-            'role_id'       => 2
+            'role_id'       => 3
         ]);
         User::create([
             'no_pelanggan'  => 'PAM0002',
@@ -42,11 +48,14 @@ class DatabaseSeeder extends Seeder
             'no_hp'         => '081229248179',
             'tgl_pasang'    => '2023-10-16',
             'password'      => bcrypt('1234'),
-            'role_id'       => 2
+            'role_id'       => 3
         ]);
 
         Role::create([
             'role'  => 'admin'
+        ]);
+        Role::create([
+            'role'  => 'petugas'
         ]);
         Role::create([
             'role'  => 'pelanggan'

@@ -17,7 +17,7 @@ class PembayaranController extends Controller
     public function index()
     {
         return view('pembayaran.index', [
-            'users'     => User::where('role_id', '2')->get(),
+            'users'     => User::where('role_id', '3')->get(),
             'periodes'  => Periode::where('status', 'Aktif')->get()
         ]);
     }

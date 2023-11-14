@@ -40,30 +40,31 @@ class CekTagihanPelangganController extends Controller
     {
         $pemakaian_id   = $request->input('pemakaian_id');
         $subTotal       = $request->input('jumlah_pembayaran');
-       
-        
-        // Set your Merchant Server Key
+
+        $existingToken = Pemakaian::where('id', $pemakaian_id)->value('snap_token');
+
+        if($existingToken){
+            return response()->json(['snapToken' => $existingToken]);
+        }
+
         \Midtrans\Config::$serverKey = config('midtrans.server_key');
-        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
         \Midtrans\Config::$isProduction = false;
-        // Set sanitization on (default)
         \Midtrans\Config::$isSanitized = true;
-        // Set 3DS transaction for credit card to true
         \Midtrans\Config::$is3ds = true;
-        
 
         $params = array(
             'transaction_details' => array(
-                'order_id'      => $pemakaian_id,
-                'gross_amount'  => $subTotal,
+                'order_id' => $pemakaian_id,
+                'gross_amount' => $subTotal,
             ),
             'customer_details' => array(
-                'first_name'    => auth()->user()->name,
-                'phone'         => auth()->user()->no_hp,
+                'first_name' => auth()->user()->name,
+                'phone' => auth()->user()->no_hp,
             ),
         );
 
         $snapToken = \Midtrans\Snap::getSnapToken($params);
+        Pemakaian::where('id', $pemakaian_id)->update(['snap_token'  => $snapToken]);
         return response()->json(['snapToken' => $snapToken]);
     }
 
@@ -78,7 +79,7 @@ class CekTagihanPelangganController extends Controller
         $serverKey = config('midtrans.server_key');
         $hashed    = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $denda . $serverKey);
 
-        if ($request->transaction_status == 'capture') {
+        if ($request->transaction_status == 'capture' or $request->transaction_status == 'settlement') {
             $order_id        = $request->order_id;
             $gross_amount    = $request->gross_amount;
 
@@ -129,6 +130,5 @@ class CekTagihanPelangganController extends Controller
 
         return $years * 12 + $months;
     }
-
 
 }

@@ -6,8 +6,8 @@
             <div class="card">
                 <div class="card-header bg-primary">
                     <div class="row align-items-center">
-                        <div class="col-6">
-                            <h5 class="card-title fw-semibold text-white">Data Pemakaian {{ auth()->user()->name }}</h5>
+                        <div class="col">
+                            <h5 class="card-title fw-semibold text-white">Data Tagihan</h5>
                         </div>
                     </div>
                 </div>

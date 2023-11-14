@@ -129,7 +129,69 @@
           </ul>
 
         </nav>
+      @elseif(auth()->user()->role->role === 'petugas')
+      <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+        <ul id="sidebarnav">
+          <li class="nav-small-cap">
+            <i class="ti t  i-dots nav-small-cap-icon fs-4"></i>
+            <span class="hide-menu">Home</span>
+          </li>
+          <li class="sidebar-item">
+            <a class="sidebar-link" href="/dashboard" aria-expanded="false">
+              <span>
+                <i class="ti ti-layout-dashboard"></i>
+              </span>
+              <span class="hide-menu">Dashboard</span>
+            </a>
+          </li>
+        </ul>
 
+        <ul id="sidebarnav">
+          <li class="nav-small-cap">
+            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+            <span class="hide-menu">Data Master</span>
+          </li>
+          <li class="sidebar-item">
+            <a class="sidebar-link" href="/periode" aria-expanded="false">
+              <span>
+                <i class="ti ti-droplet-filled"></i>
+              </span>
+              <span class="hide-menu">Periode Pemakaian</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a class="sidebar-link" href="/tahun" aria-expanded="false">
+              <span>
+                <i class="ti ti-calendar-stats"></i>
+              </span>
+              <span class="hide-menu">Tahun</span>
+            </a>
+          </li>
+        </ul>
+
+        <ul id="sidebarnav">
+          <li class="nav-small-cap">
+            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+            <span class="hide-menu">Pemakaian</span>
+          </li>
+          <li class="sidebar-item">
+            <a class="sidebar-link" href="/lihat-pemakaian" aria-expanded="false">
+              <span>
+                <i class="ti ti-brand-tinder"></i>
+              </span>
+              <span class="hide-menu">Lihat Pemakaian</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a class="sidebar-link" href="/catat-pemakaian" aria-expanded="false">
+              <span>
+                <i class="ti ti-file-pencil"></i>
+              </span>
+              <span class="hide-menu">Catat Pemakaian</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
       @else 
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
           <ul id="sidebarnav">

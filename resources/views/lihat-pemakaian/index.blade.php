@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-header bg-primary">
                     <div class="row align-items-center">
-                        <div class="col-6">
+                        <div class="col">
                             <h5 class="card-title fw-semibold text-white">Data Pemakaian Pelanggan</h5>
                         </div>
                     </div>

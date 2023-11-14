@@ -34,9 +34,20 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::group(['middleware' => 'CheckRole:admin,pelanggan'], function(){
+    Route::group(['middleware' => 'CheckRole:admin,petugas,pelanggan'], function(){
         Route::get('/', [DashboardController::class, 'index']);
         Route::get('/dashboard', [DashboardController::class, 'index']);
+    });
+
+    Route::group(['middleware'  => 'CheckRole:admin,petugas'], function(){
+        Route::get('/lihat-pemakaian', [LihatPemakaianController::class, 'index']);
+
+        Route::get('/catat-pemakaian/get-data/{user_id}', [PemakaianController::class, 'getData']);
+        Route::get('/catat-pemakaian', [PemakaianController::class, 'index']);
+        Route::post('/catat-pemakaian', [PemakaianController::class, 'store']);
+
+        Route::resource('/periode', PeriodeController::class);
+        Route::resource('/tahun', TahunController::class);
     });
 
     Route::group(['middleware' => 'CheckRole:admin'], function(){
@@ -44,21 +55,11 @@ Route::middleware('auth')->group(function () {
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
-        Route::resource('/periode', PeriodeController::class);
-    
-        Route::resource('/tahun', TahunController::class);
-    
         Route::get('/tarif', [TarifController::class, 'index']);
         Route::get('/tarif/{id}/edit', [TarifController::class, 'edit']);
         Route::put('/tarif/{id}', [TarifController::class, 'update']);
     
         Route::resource('/pelanggan', PelangganController::class);
-    
-        Route::get('/catat-pemakaian/get-data/{user_id}', [PemakaianController::class, 'getData']);
-        Route::get('/catat-pemakaian', [PemakaianController::class, 'index']);
-        Route::post('/catat-pemakaian', [PemakaianController::class, 'store']);
-    
-        Route::get('/lihat-pemakaian', [LihatPemakaianController::class, 'index']);
     
         Route::get('/pembayaran', [PembayaranController::class, 'index']);
         Route::post('/pembayaran', [PembayaranController::class, 'bayar']);

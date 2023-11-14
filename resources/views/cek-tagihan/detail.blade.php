@@ -1,26 +1,21 @@
 @extends('layouts.main')
 
-<style>
-    td {
-        padding: 7px;
-    }
-</style>
-
 @section('content')
     <div class="row">
         <div class="col">
             <div class="card">
                 <div class="card-header bg-primary">
                     <div class="row align-items-center">
-                        <div class="col-6">
+                        <div class="col">
                             <h5 class="card-title fw-semibold text-white">Detail Pemakaian</h5>
                         </div>
                     </div>
                 </div>
 
+                <div class="card-body">
                 <form action="/cek-tagihan/bayar" method="POST">
                     @csrf
-                    <div class="card-body">
+                    
                         <input type="hidden" id="pemakaian_id" name="pemakaian_id" value="{{ $tagihan->id }}">
                         <input type="hidden" class="form-control" name="tgl_bayar" id="tgl_bayar" readonly>
                         
@@ -79,14 +74,13 @@
                             </tr>
                         </table>
                         @if ($tagihan->status == 'belum dibayar')
-                            <div class="button p-5">
+                            <div class="button">
                                 <button type="button" class="btn btn-success m-1 float-end" id="bayar">Bayar Sekarang</button>
                             </div>
                         @else
                         @endif
-                    </div>
-    
                 </form>
+            </div>
             </div>
         </div>
     </div>
@@ -108,7 +102,7 @@
                 $('#denda').text(totalDenda.toFixed(2));
                 $('#jumlah_pembayaran').text(totalPembayaran.toFixed(2));
             } else {
-                $('#denda').text('0.00');
+                $('#denda').text('0');
             }
         }
 
@@ -155,26 +149,43 @@
                         var snapToken = response.snapToken;
                         window.snap.pay(snapToken, {
                             onSuccess: function(result) {
-                                alert("payment success!");
-                                location.reload();
-                                console.log(result);
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Pambayaran Berhasil !',
+                                    text: 'Pembayaran Anda Telah Diproses !',
+                                }).then((result) => {
+                                    location.reload();
+                                    console.log(result);
+                                });
                             },
                             onPending: function(result) {
-                                /* You may add your own implementation here */
-                                alert("waiting for your payment!");
-                                console.log(result);
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Pembayaran Tertunda',
+                                    text: 'Menunggu pembayaran Anda...',
+                                }).then((result) => {
+                                    console.log(result);
+                                });
                             },
                             onError: function(result) {
-                                /* You may add your own implementation here */
-                                alert("payment failed!");
-                                console.log(result);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Pembayaran gagak',
+                                    text: 'Ups! Ada yang salah dengan pembayaran Anda',
+                                }).then((result) => {
+                                    console.log(result);
+                                });
                             },
                             onClose: function() {
-                                /* You may add your own implementation here */
-                                alert('you closed the popup without finishing the payment');
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Pembayaran Dibatalkan',
+                                    text: 'Anda menutup popup tanpa menyelesaikan pembayaran',
+                                });
                             }
                         });
                     },
+
                     error: function(error) {
                         console.log(error);
                     }
