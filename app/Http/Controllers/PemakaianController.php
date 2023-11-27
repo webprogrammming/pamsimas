@@ -40,7 +40,7 @@ class PemakaianController extends Controller
         ], [
             'penggunaan_awal.required'  => 'Form wajib diisi !',
             'penggunaan_akhir.required' => 'Form wajib diisi !',
-            'jumlah_penggunaan.required'=> 'Form wajib diisi !',
+            'jumlah_penggunaan.required' => 'Form wajib diisi !',
             'user_id.required'          => 'Form wajib diisi !',
             'periode_id.required'       => 'Form wajib diisi !',
         ]);
@@ -70,5 +70,33 @@ class PemakaianController extends Controller
         Pemakaian::create($data);
 
         return redirect()->back()->with('success', 'Data pemakaian berhasil di simpan !');
+    }
+
+    /**
+     * Get Data Pelanggan From Scanner Qr Code
+     */
+    public function getDataPelanggan(Request $request)
+    {
+        $qrCode     = $request->input('result');
+        $pelanggan  = User::where('no_pelanggan', $qrCode)->first();
+
+        $dataPelanggan = [
+            'id'                => null,
+            'user_id'           => null,
+            'penggunaan_akhir'  => null
+        ];
+
+        if ($pelanggan) {
+            $pemakaian = Pemakaian::where('user_id', $pelanggan->id)->first();
+            $penggunaan_akhir = ($pemakaian) ? $pemakaian->penggunaan_akhir : 0;
+            $dataPelanggan = [
+                'id'                  => $pelanggan->id,
+                'user_id'             => $pelanggan->id,
+                'penggunaan_akhir'    => $penggunaan_akhir
+            ];
+        }
+
+
+        return response()->json($dataPelanggan);
     }
 }

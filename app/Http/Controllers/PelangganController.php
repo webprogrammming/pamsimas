@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Barryvdh\DomPDF\PDF;
+use Endroid\QrCode\QrCode;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Endroid\QrCode\Writer\PngWriter;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class PelangganController extends Controller
@@ -33,8 +38,8 @@ class PelangganController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name'              => 'required',
-            'email'             => 'required|email',
-            'no_hp'             => 'required',
+            'email'             => 'required|unique:users|email:rfc,dns',
+            'no_hp'             => 'required|unique:users',
             'tgl_pasang'        => 'required',
             'password'          => 'required',
             'confirmPassword'   => 'required|same:password'
@@ -42,23 +47,35 @@ class PelangganController extends Controller
             'name.required'             => 'Form wajib diisi !',
             'email.required'            => 'Form wajib diisi !',
             'email.email'               => 'Gunakan email yang valid !',
+            'email.unique'              => 'Email sudah digunakan !',
             'no_hp.required'            => 'Form wajib diisi !',
+            'no_hp.unique'              => 'No HP sudah digunakan !',
             'tgl_pasang.required'       => 'Form wajib diisi !',
             'password.required'         => 'Form wajib diisi !',
             'confirmPassword.required'  => 'Form wajib diisi !',
-            'confirmPassword.same'      => 'Konfirmasi password tidak sama !'  
+            'confirmPassword.same'      => 'Konfirmasi password tidak sama !'
         ]);
-    
+
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-    
+
         $last_no_pelanggan = User::max('no_pelanggan');
         $last_no_pelanggan = str_replace('PAM', '', $last_no_pelanggan);
         $last_no_pelanggan++;
-    
+
         $new_no_pelanggan = 'PAM' . str_pad($last_no_pelanggan, 4, '0', STR_PAD_LEFT);
-    
+
+        $qrCodePath = 'qrcode/' . $new_no_pelanggan . '.png';
+
+        if (!Storage::disk('public')->exists($qrCodePath)) {
+            $qrCode = new QrCode($new_no_pelanggan);
+            $writer = new PngWriter();
+            $result = $writer->write($qrCode);
+            $image  = $result->getDataUri();
+            Storage::disk('public')->put($qrCodePath, file_get_contents($image));
+        }
+
         User::create([
             'name'          => $request->name,
             'email'         => $request->email,
@@ -67,10 +84,10 @@ class PelangganController extends Controller
             'password'      => $request->password,
             'no_pelanggan'  => $new_no_pelanggan
         ]);
-    
+
         return redirect('/pelanggan')->with('success', 'Berhasil menambahkan pelanggan baru');
     }
-    
+
 
     /**
      * Display the specified resource.
@@ -78,8 +95,10 @@ class PelangganController extends Controller
     public function show($id)
     {
         $user = User::find($id);
+        $qrCode = new QrCode($user->no_pelanggan);
         return view('pelanggan.show', [
-            'pelanggan' => $user
+            'pelanggan' => $user,
+            'qrCode'    => $qrCode,
         ]);
     }
 
@@ -112,11 +131,11 @@ class PelangganController extends Controller
             'no_hp.required'    => 'Form wajib diisi !',
             'tgl_pasang.required' => 'Form wajib diisi !',
         ]);
-    
+
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-    
+
 
         if (!empty($request->password)) {
             $validator = Validator::make($request->all(), [
@@ -126,11 +145,11 @@ class PelangganController extends Controller
                 'password.required' => 'Form wajib diisi !',
                 'confirmPassword.same' => 'Konfirmasi password tidak sama !',
             ]);
-    
+
             if ($validator->fails()) {
                 return back()->withErrors($validator)->withInput();
             }
-    
+
             $user->update([
                 'name'          => $request->name,
                 'email'         => $request->email,
@@ -146,10 +165,9 @@ class PelangganController extends Controller
                 'tgl_pasang'    => $request->tgl_pasang,
             ]);
         }
-    
+
         return redirect('/pelanggan')->with('success', 'Berhasil memperbarui data pelanggan');
     }
-    
 
     /**
      * Remove the specified resource from storage.

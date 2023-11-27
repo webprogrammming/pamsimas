@@ -18,15 +18,15 @@ class DashboardController extends Controller
         return view('dashboard', [
             'tagihanBelumLunas'     => Pemakaian::where('status', 'belum dibayar')->count(),
             'tagihanLunas'          => Pemakaian::where('status', 'lunas')->count(),
-            'totalPengguna'         => User::where('role_id', '2')->count(),
+            'totalPengguna'         => User::where('role_id', '3')->count(),
             'riwayatPembayarans'    => Pembayaran::orderBy('id', 'DESC')->take(10)->get(),
 
             'tagihanBelumDibayar'   => Pemakaian::where('user_id', $user)
-                    ->where('status', 'belum dibayar')
-                    ->count(),
+                ->where('status', 'belum dibayar')
+                ->count(),
             'tagihanLunas'          => Pemakaian::where('user_id', $user)
-                    ->where('status', 'lunas')
-                    ->count(),
+                ->where('status', 'lunas')
+                ->count(),
             'pemakaians'            => Pemakaian::where('user_id', $user)->take(10)->get()
         ]);
     }

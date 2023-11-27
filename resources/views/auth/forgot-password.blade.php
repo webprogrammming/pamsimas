@@ -7,7 +7,17 @@
             <div class="mb-4 text-sm text-gray-600">
                 {{ __('Lupa kata sandi Anda? Tidak masalah. Cukup beri tahu kami alamat email Anda dan kami akan mengirimkan email berisi tautan pengaturan ulang kata sandi yang memungkinkan Anda memilih yang baru.') }}
             </div>
-        
+
+            @if($errors->any())
+                <div class="alert alert-danger" role="alert">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            
             <form method="POST" action="{{ route('password.email') }}">
                 @csrf
                 <div class="mb-3">

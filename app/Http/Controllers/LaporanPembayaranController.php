@@ -14,7 +14,7 @@ class LaporanPembayaranController extends Controller
     public function index()
     {
         return view('laporan-pembayaran.index', [
-            'periodes'   => Periode::all()
+            'periodes'   => Periode::with('user')
         ]);
     }
 
@@ -25,19 +25,19 @@ class LaporanPembayaranController extends Controller
 
         $pembayaran = Pembayaran::query();
 
-        if($tanggalMulai && $tanggalSelesai){
+        if ($tanggalMulai && $tanggalSelesai) {
             $pembayaran->whereBetween('tgl_bayar', [$tanggalMulai, $tanggalSelesai])
-                    ->orderBy('id', 'DESC');
+                ->orderBy('id', 'DESC');
         }
 
         $data = $pembayaran->with('pemakaian.user')->get();
 
-        if(empty($tanggalMulai) && empty($tanggalSelesai)){
+        if (empty($tanggalMulai) && empty($tanggalSelesai)) {
             $data = Pembayaran::with('pemakaian.user')
-                    ->orderBy('id', 'DESC')
-                    ->get();
+                ->orderBy('id', 'DESC')
+                ->get();
         }
-        
+
         return response()->json($data);
     }
 
@@ -48,17 +48,17 @@ class LaporanPembayaranController extends Controller
 
         $pembayaran = Pembayaran::query();
 
-        if($tanggalMulai && $tanggalSelesai){
+        if ($tanggalMulai && $tanggalSelesai) {
             $pembayaran->whereBetween('tgl_bayar', [$tanggalMulai, $tanggalSelesai])
-                    ->orderBy('id', 'DESC');
+                ->orderBy('id', 'DESC');
         }
 
         $data = $pembayaran->with('pemakaian.user')->get();
 
-        if(empty($tanggalMulai) && empty($tanggalSelesai)){
+        if (empty($tanggalMulai) && empty($tanggalSelesai)) {
             $data = Pembayaran::with('pemakaian.user')
-                    ->orderBy('id', 'DESC')
-                    ->get();
+                ->orderBy('id', 'DESC')
+                ->get();
         }
 
         $pdf  = new Dompdf();

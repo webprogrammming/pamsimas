@@ -21,9 +21,9 @@ class TagihanTerbayarController extends Controller
         $tanggalMulai   = $request->input('tanggal_mulai');
         $tanggalSelesai = $request->input('tanggal_selesai');
 
-        $user = auth()->user(); // Mendapatkan pengguna yang sedang login
+        $user = auth()->user();
 
-        $pembayaran = Pembayaran::with(['pemakaian.user']); // Menggunakan Eloquent eager loading
+        $pembayaran = Pembayaran::with(['pemakaian.user']);
 
         if ($tanggalMulai && $tanggalSelesai) {
             $pembayaran->whereBetween('tgl_bayar', [$tanggalMulai, $tanggalSelesai]);
@@ -47,14 +47,14 @@ class TagihanTerbayarController extends Controller
 
     public function print(Pembayaran $id)
     {
-        $pembayaran = Pembayaran::find($id);
+        $pembayaran = Pembayaran::with('user')->find($id);
         $tarif      = Tarif::first();
 
 
         $pdf = PDF::loadView('tagihan-terbayar.print', [
             'pembayaran'    => $pembayaran->first(),
             'tarif'         => $tarif
-        ]); 
+        ]);
 
         return $pdf->stream('print.pdf');
     }

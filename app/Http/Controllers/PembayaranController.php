@@ -61,7 +61,7 @@ class PembayaranController extends Controller
         $pembayaran = new Pembayaran();
         $pembayaran->kd_pembayaran   = $kd_pembayaran;
         $pembayaran->tgl_bayar       = $tgl_bayar;
-        $pembayaran->pemakaian_id    = $pemakaian_id;  
+        $pembayaran->pemakaian_id    = $pemakaian_id;
         $pembayaran->denda           = $denda;
         $pembayaran->subTotal        = $subTotal;
         $pembayaran->uang_cash       = $uang_cash;
@@ -74,7 +74,7 @@ class PembayaranController extends Controller
         $pemakaian->save();
 
         return response()->json([
-           'message'    => 'Tagihan air berhasil dibayar !' 
+            'message'    => 'Tagihan air berhasil dibayar !'
         ], 200);
     }
 
@@ -83,11 +83,11 @@ class PembayaranController extends Controller
         $pemakaian  = Pemakaian::find($id);
         $pembayaran = Pembayaran::where('pemakaian_id', $pemakaian->id)->get();
 
-        if(!$pemakaian){
+        if (!$pemakaian) {
             return abort(404);
         }
 
-        if(empty($pembayaran)){
+        if (empty($pembayaran)) {
             return abort(404);
         }
 
@@ -105,9 +105,7 @@ class PembayaranController extends Controller
             'tarif_beban'       => $tarifBeban,
             'denda'             => $denda,
             'subTotal'          => $subTotal,
-        ]); 
+        ]);
         return $pdf->stream('bukti-pembayaran.pdf');
     }
-
-
 }
