@@ -29,7 +29,6 @@
                                 <img src="{{ asset('storage/qrcode/' . $pelanggan->no_pelanggan . '.png') }}" alt="qr-code"
                                     style="width: 250px; height: 250px; display: block; margin: 0 auto;">
                             </div>
-                            <a href="#" class="btn btn-success">Cetak Label</a>
                         </div>
 
                         <div class="col-lg-8">

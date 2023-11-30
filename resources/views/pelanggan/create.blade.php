@@ -27,7 +27,8 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="mb-3">
-                                    <label for="name" class="form-label">Nama Lengkap</label>
+                                    <label for="name" class="form-label">Nama Lengkap <span
+                                            style="color: red">*</span></label>
                                     <input type="text" class="form-control" name="name" value="{{ old('name') }}">
                                     @error('name')
                                         <div class="text-danger">{{ $message }}</div>
@@ -36,7 +37,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
+                                    <label for="email" class="form-label">Email <span style="color: red">*</span></label>
                                     <input type="email" class="form-control" name="email" value="{{ old('email') }}">
                                     @error('email')
                                         <div class="text-danger">{{ $message }}</div>
@@ -47,7 +48,8 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="mb-3">
-                                    <label for="no_hp" class="form-label">Nomor HP</label>
+                                    <label for="no_hp" class="form-label">Nomor HP <span
+                                            style="color: red">*</span></label>
                                     <input type="number" class="form-control" name="no_hp" value="{{ old('no_hp') }}">
                                     @error('no_hp')
                                         <div class="text-danger">{{ $message }}</div>
@@ -56,8 +58,10 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="mb-3">
-                                    <label for="tgl_pasang" class="form-label">Tanggal Pasang</label>
-                                    <input type="date" class="form-control" name="tgl_pasang" value="{{ old('tgl_pasang') }}">
+                                    <label for="tgl_pasang" class="form-label">Tanggal Pasang <span
+                                            style="color: red">*</span></label>
+                                    <input type="date" class="form-control" name="tgl_pasang"
+                                        value="{{ old('tgl_pasang') }}">
                                     @error('tgl_pasang')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -65,14 +69,15 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label">Buat Password</label>
+                            <label for="password" class="form-label">Buat Password <span style="color: red">*</span></label>
                             <input type="password" class="form-control" name="password">
                             @error('password')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Konfirmasi Password</label>
+                            <label for="confirmPassword" class="form-label">Konfirmasi Password <span
+                                    style="color: red">*</span></label>
                             <input type="password" class="form-control" name="confirmPassword">
                             @error('confirmPassword')
                                 <div class="text-danger">{{ $message }}</div>
@@ -87,7 +92,7 @@
     </div>
 
     <script>
-        $(document).ready( function () {
+        $(document).ready(function() {
             $('#table_id').DataTable();
         });
     </script>

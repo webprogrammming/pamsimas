@@ -60,6 +60,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/tarif/{id}/edit', [TarifController::class, 'edit']);
         Route::put('/tarif/{id}', [TarifController::class, 'update']);
 
+        Route::get('/pelanggan/kartu-pelanggan/{id}', [PelangganController::class, 'print']);
         Route::resource('/pelanggan', PelangganController::class);
 
         Route::get('/pembayaran', [PembayaranController::class, 'index']);

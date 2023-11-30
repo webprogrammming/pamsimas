@@ -21,18 +21,18 @@
                             {{ session('success') }}
                         </div>
                     @endif
-    
+
                     <form method="POST" action="/periode">
                         @csrf
                         <div class="mb-3">
-                            <label for="periode" class="form-label">Periode</label>
+                            <label for="periode" class="form-label">Periode <span style="color: red">*</span></label>
                             <input type="text" class="form-control" name="periode" value="{{ old('periode') }}">
                             @error('periode')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="bulan_id" class="form-label">Periode Bulan</label>
+                            <label for="bulan_id" class="form-label">Periode Bulan <span style="color: red">*</span></label>
                             <select class="form-select" name="bulan_id" aria-label="Default select example">
                                 <option value="" selected>-- Pilih Bulan --</option>
                                 @foreach ($bulans as $bulan)
@@ -44,7 +44,7 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="tahun_id" class="form-label">Periode Tahun</label>
+                            <label for="tahun_id" class="form-label">Periode Tahun <span style="color: red">*</span></label>
                             <select class="form-select" name="tahun_id" aria-label="Default select example">
                                 <option value="" selected>-- Pilih Tahun --</option>
                                 @foreach ($tahuns as $tahun)
@@ -63,7 +63,7 @@
     </div>
 
     <script>
-        $(document).ready( function () {
+        $(document).ready(function() {
             $('#table_id').DataTable();
         });
     </script>

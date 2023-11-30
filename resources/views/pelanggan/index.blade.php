@@ -21,7 +21,7 @@
                             {{ session('success') }}
                         </div>
                     @endif
-    
+
                     <div class="table-responsive">
                         <table id="table_id" class="table display">
                             <thead>
@@ -41,18 +41,24 @@
                                         <td>{{ $pelanggan->name }}</td>
                                         <td>{{ date('d-m-Y', strtotime($pelanggan->tgl_pasang)) }}</td>
                                         <td>
-                                            <a href="/pelanggan/{{ $pelanggan->id }}" type="button" class="btn btn-success mb-1"><i class="ti ti-eye"></i></a>
-                                            <a href="/pelanggan/{{ $pelanggan->id }}/edit" type="button" class="btn btn-warning mb-1"><i class="ti ti-edit"></i></a>
-                                            <form id="{{ $pelanggan->id }}" action="/pelanggan/{{ $pelanggan->id }}" method="POST" class="d-inline">
+                                            <a href="/pelanggan/kartu-pelanggan/{{ $pelanggan->id }}" type="button"
+                                                class="btn btn-dark mb-1"><i class="ti ti-printer"></i></a>
+                                            <a href="/pelanggan/{{ $pelanggan->id }}" type="button"
+                                                class="btn btn-success mb-1"><i class="ti ti-eye"></i></a>
+                                            <a href="/pelanggan/{{ $pelanggan->id }}/edit" type="button"
+                                                class="btn btn-warning mb-1"><i class="ti ti-edit"></i></a>
+                                            <form id="{{ $pelanggan->id }}" action="/pelanggan/{{ $pelanggan->id }}"
+                                                method="POST" class="d-inline">
                                                 @method('delete')
                                                 @csrf
-                                                <button type="button" class="btn btn-danger swal-confirm mb-1" data-form="{{ $pelanggan->id }}"><i class="ti ti-trash"></i></button>
+                                                <button type="button" class="btn btn-danger swal-confirm mb-1"
+                                                    data-form="{{ $pelanggan->id }}"><i class="ti ti-trash"></i></button>
                                             </form>
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
-                        </table>    
+                        </table>
                     </div>
                 </div>
             </div>
@@ -60,7 +66,7 @@
     </div>
 
     <script>
-        $(document).ready( function () {
+        $(document).ready(function() {
             $('#table_id').DataTable();
         });
     </script>

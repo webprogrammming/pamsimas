@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Barryvdh\DomPDF\PDF;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Endroid\QrCode\QrCode;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -177,5 +177,22 @@ class PelangganController extends Controller
         User::find($id)->delete();
 
         return redirect()->back()->with('success', 'Berhasil menghapus pelanggan !');
+    }
+
+    /**
+     * Print kartu pelanggan.
+     */
+    public function print($id)
+    {
+        $user       = User::find($id);
+        $qrCodePath = storage_path('app/public/qrcode/' . $user->no_pelanggan . '.png');
+        $qrCode     = base64_encode(file_get_contents($qrCodePath));
+
+        $pdf = PDF::loadView('pelanggan.kartu-pelanggan', [
+            'pelanggan'     => $user,
+            'qrCode'        => $qrCode,
+        ]);
+
+        return $pdf->stream('kartu-pelanggan.pdf');
     }
 }

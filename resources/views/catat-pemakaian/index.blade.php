@@ -28,8 +28,10 @@
                         @csrf
                         <div class="row">
                             <div class="col-lg-4">
-                                <label for="scan-qrcode" class="mb-2"><b>Scan Qr Code Pelanggan</b></label>
-                                <div id="reader" width="600px"></div>
+                                <div class="my-3">
+                                    <label for="scan-qrcode" class="mb-2"><b>Scan Qr Code Pelanggan</b></label>
+                                    <div id="reader" width="600px"></div>
+                                </div>
                             </div>
                             <div class="col-lg-8">
                                 <div class="mb-3">
@@ -37,7 +39,8 @@
                                     <input type="hidden" id="id">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="name" class="form-label">Pilih Nama Pelanggan</label>
+                                    <label for="name" class="form-label">Pilih Nama Pelanggan <span
+                                            style="color: red">*</span></label>
                                     <select id="user_id" class="js-example-basic-single" name="user_id"
                                         style="width: 100%;">
                                         <option value="" selected>-- Pilih Pelanggan --</option>
@@ -71,7 +74,8 @@
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <div class="mb-3">
-                                            <label for="penggunaan_akhir" class="form-label">Penggunaan Akhir</label>
+                                            <label for="penggunaan_akhir" class="form-label">Penggunaan Akhir <span
+                                                    style="color: red">*</span></label>
                                             <input type="number" class="form-control" name="penggunaan_akhir"
                                                 id="penggunaan_akhir" required>
                                             @error('penggunaan_akhir')
@@ -82,7 +86,8 @@
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="mb-3">
-                                            <label for="periode_id" class="form-label">Periode Pemakaian</label>
+                                            <label for="periode_id" class="form-label">Periode Pemakaian <span
+                                                    style="color: red">*</span></label>
                                             <select class="form-select" name="periode_id"
                                                 aria-label="Default select example">
                                                 @foreach ($periodes as $periode)
@@ -97,7 +102,8 @@
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="mb-3">
-                                            <label for="batas_bayar" class="form-label">Tanggal Batas Pembayaran</label>
+                                            <label for="batas_bayar" class="form-label">Tanggal Batas Pembayaran <span
+                                                    style="color: red">*</span></label>
                                             <input type="date" class="form-control" name="batas_bayar" id="batas_bayar">
                                             @error('batas_bayar')
                                                 <div class="text-danger">{{ $message }}</div>

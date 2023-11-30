@@ -26,7 +26,7 @@
                         @method('put')
                         @csrf
 
-                        <label for="m3" class="mb-2">Biaya Per M3</label><br>
+                        <label for="m3" class="mb-2">Biaya Per m³<span style="color: red">*</span></label><br>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">Rp</span>
                             <input type="number" class="form-control" name="m3" value="{{ old('m3', $tarif->m3) }}">
@@ -35,19 +35,21 @@
                             @enderror
                         </div>
 
-                        <label for="beban" class="mb-2">Biaya Beban</label><br>
+                        <label for="beban" class="mb-2">Biaya Beban <span style="color: red">*</span></label><br>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">Rp</span>
-                            <input type="number" class="form-control" name="beban" value="{{ old('beban', $tarif->beban) }}">
+                            <input type="number" class="form-control" name="beban"
+                                value="{{ old('beban', $tarif->beban) }}">
                             @error('beban')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        <label for="denda" class="mb-2">Biaya Denda</label><br>
+                        <label for="denda" class="mb-2">Biaya Denda <span style="color: red">*</span></label><br>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">Rp</span>
-                            <input type="number" class="form-control" name="denda" value="{{ old('denda', $tarif->denda) }}">
+                            <input type="number" class="form-control" name="denda"
+                                value="{{ old('denda', $tarif->denda) }}">
                             @error('denda')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -61,7 +63,7 @@
     </div>
 
     <script>
-        $(document).ready( function () {
+        $(document).ready(function() {
             $('#table_id').DataTable();
         });
     </script>

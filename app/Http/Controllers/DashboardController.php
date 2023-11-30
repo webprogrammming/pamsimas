@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $user       = auth()->user()->id;
         return view('dashboard', [
             'tagihanBelumLunas'     => Pemakaian::where('status', 'belum dibayar')->count(),
-            'tagihanLunas'          => Pemakaian::where('status', 'lunas')->count(),
+            'tagihanSudahLunas'          => Pemakaian::where('status', 'lunas')->count(),
             'totalPengguna'         => User::where('role_id', '3')->count(),
             'riwayatPembayarans'    => Pembayaran::orderBy('id', 'DESC')->take(10)->get(),
 

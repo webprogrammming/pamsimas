@@ -18,13 +18,13 @@
                             {{ session('success') }}
                         </div>
                     @endif
-    
+
                     <div class="table-responsive">
                         <table id="table_id" class="table display">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Biaya Per-M3</th>
+                                    <th>Biaya Per m³</th>
                                     <th>Biaya Beban</th>
                                     <th>Biaya Denda</th>
                                     <th>Perbarui Tarif</th>
@@ -38,12 +38,13 @@
                                         <td>Rp. {{ $tarif->beban }}</td>
                                         <td>Rp. {{ $tarif->denda }} / Bulan</td>
                                         <td>
-                                            <a href="/tarif/{{ $tarif->id }}/edit" type="button" class="btn btn-warning mb-1"><i class="ti ti-edit"></i></a>
+                                            <a href="/tarif/{{ $tarif->id }}/edit" type="button"
+                                                class="btn btn-warning mb-1"><i class="ti ti-edit"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
-                        </table>    
+                        </table>
                     </div>
                 </div>
             </div>
@@ -51,7 +52,7 @@
     </div>
 
     <script>
-        $(document).ready( function () {
+        $(document).ready(function() {
             $('#table_id').DataTable();
         });
     </script>

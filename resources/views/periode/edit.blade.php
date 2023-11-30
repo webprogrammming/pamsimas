@@ -21,23 +21,26 @@
                             {{ session('success') }}
                         </div>
                     @endif
-    
+
                     <form method="POST" action="/periode/{{ $periode->id }}">
                         @method('put')
                         @csrf
                         <div class="mb-3">
-                            <label for="periode" class="form-label">Periode</label>
-                            <input type="text" class="form-control" name="periode" value="{{ old('periode', $periode->periode) }}">
+                            <label for="periode" class="form-label">Periode <span style="color: red">*</span></label>
+                            <input type="text" class="form-control" name="periode"
+                                value="{{ old('periode', $periode->periode) }}">
                             @error('periode')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="bulan_id" class="form-label">Periode Bulan</label>
+                            <label for="bulan_id" class="form-label">Periode Bulan <span style="color: red">*</span></label>
                             <select class="form-select" name="bulan_id" aria-label="Default select example">
                                 <option value="" selected>-- Pilih Bulan --</option>
                                 @foreach ($bulans as $bulan)
-                                    <option value="{{ $bulan->id }}" {{ $periode->bulan_id == $bulan->id ? 'selected' : '' }}>{{ $bulan->bulan }}</option>
+                                    <option value="{{ $bulan->id }}"
+                                        {{ $periode->bulan_id == $bulan->id ? 'selected' : '' }}>{{ $bulan->bulan }}
+                                    </option>
                                 @endforeach
                             </select>
                             @error('bulan_id')
@@ -45,7 +48,7 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="tahun_id" class="form-label">Periode Tahun</label>
+                            <label for="tahun_id" class="form-label">Periode Tahun <span style="color: red">*</span></label>
                             <select class="form-select" name="tahun_id" aria-label="Default select example">
                                 <option value="" selected>-- Pilih Tahun --</option>
                                 @foreach ($tahuns as $tahun)
@@ -63,12 +66,13 @@
                         <div class="mb-3">
                             <label for="periode" class="form-label">Ubah Status Periode</label>
                             <select class="form-control" name="status" id="status">
-                                @foreach(['aktif', 'tidak aktif'] as $status)
-                                    <option value="{{ $status }}" @if($status == $periode->status) selected @endif>{{ ucfirst($status) }}</option>
+                                @foreach (['aktif', 'tidak aktif'] as $status)
+                                    <option value="{{ $status }}" @if ($status == $periode->status) selected @endif>
+                                        {{ ucfirst($status) }}</option>
                                 @endforeach
                             </select>
                         </div>
-                                                
+
 
                         <button type="submit" class="btn btn-primary m-1 float-end">Simpan</button>
                     </form>
@@ -78,7 +82,7 @@
     </div>
 
     <script>
-        $(document).ready( function () {
+        $(document).ready(function() {
             $('#table_id').DataTable();
         });
     </script>

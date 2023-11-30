@@ -10,7 +10,7 @@
                             <h5 class="card-title fw-semibold text-white">Data Tahun</h5>
                         </div>
                         <div class="col-6 text-right">
-                            <a href="/tahun/create" type="button" class="btn btn-warning float-end">Tambah Tahun</a>
+                            <a href="/tahun" type="button" class="btn btn-warning float-end">Kembali</a>
                         </div>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                     <form method="POST" action="/tahun">
                         @csrf
                         <div class="mb-3">
-                            <label for="tahun" class="form-label">Tahun</label>
+                            <label for="tahun" class="form-label">Tahun <span style="color: red">*</span></label>
                             <input type="number" class="form-control" name="tahun">
                             @error('tahun')
                                 <div class="text-danger">{{ $message }}</div>
@@ -40,7 +40,7 @@
     </div>
 
     <script>
-        $(document).ready( function () {
+        $(document).ready(function() {
             $('#table_id').DataTable();
         });
     </script>
