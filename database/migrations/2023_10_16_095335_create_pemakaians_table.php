@@ -20,8 +20,7 @@ return new class extends Migration
             $table->date('batas_bayar');
             $table->foreignId('user_id');
             $table->foreignId('periode_id');
-            $table->string('snap_token')->nullable();
-            $table->enum('status', ['belum dibayar', 'pending', 'lunas'])->default('belum dibayar');
+            $table->enum('status', ['belum dibayar', 'lunas'])->default('belum dibayar');
             $table->timestamps();
         });
     }

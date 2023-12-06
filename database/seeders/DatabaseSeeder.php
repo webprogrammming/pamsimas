@@ -32,24 +32,24 @@ class DatabaseSeeder extends Seeder
             'password'  => bcrypt('1234'),
             'role_id'   => 2
         ]);
-        User::create([
-            'no_pelanggan'  => 'PAM0001',
-            'name'          => 'Dwi Purnomo',
-            'email'         => 'purnomodwi174@gmail.com',
-            'no_hp'         => '081229248179',
-            'tgl_pasang'    => '2023-10-16',
-            'password'      => bcrypt('1234'),
-            'role_id'       => 3
-        ]);
-        User::create([
-            'no_pelanggan'  => 'PAM0002',
-            'name'          => 'Mujiyono',
-            'email'         => 'mujiyono@gmail.com',
-            'no_hp'         => '081229248179',
-            'tgl_pasang'    => '2023-10-16',
-            'password'      => bcrypt('1234'),
-            'role_id'       => 3
-        ]);
+        // User::create([
+        //     'no_pelanggan'  => 'PAM0001',
+        //     'name'          => 'Dwi Purnomo',
+        //     'email'         => 'purnomodwi174@gmail.com',
+        //     'no_hp'         => '081229248179',
+        //     'tgl_pasang'    => '2023-10-16',
+        //     'password'      => bcrypt('1234'),
+        //     'role_id'       => 3
+        // ]);
+        // User::create([
+        //     'no_pelanggan'  => 'PAM0002',
+        //     'name'          => 'Mujiyono',
+        //     'email'         => 'mujiyono@gmail.com',
+        //     'no_hp'         => '081229248179',
+        //     'tgl_pasang'    => '2023-10-16',
+        //     'password'      => bcrypt('1234'),
+        //     'role_id'       => 3
+        // ]);
 
         Role::create([
             'role'  => 'admin'

@@ -14,4 +14,9 @@ class Pembayaran extends Model
     {
         return $this->belongsTo(Pemakaian::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -40,18 +40,6 @@ class CekTagihanPelangganController extends Controller
         $pemakaian_id = $request->input('pemakaian_id');
         $subTotal = $request->input('jumlah_pembayaran');
 
-        $existingToken = Pemakaian::where('id', $pemakaian_id)->value('snap_token');
-
-        if ($existingToken) {
-            return response()->json(['snapToken' => $existingToken]);
-        }
-
-        if ($existingToken) {
-            if ($this->isSnapTokenValid($existingToken)) {
-                return response()->json(['snapToken' => $existingToken]);
-            }
-        }
-
         \Midtrans\Config::$serverKey = config('midtrans.server_key');
         \Midtrans\Config::$isProduction = false;
         \Midtrans\Config::$isSanitized = true;
@@ -59,50 +47,18 @@ class CekTagihanPelangganController extends Controller
 
         $params = array(
             'transaction_details' => array(
-                'order_id' => $pemakaian_id,
+                'order_id' => $pemakaian_id . '_' . time(),
                 'gross_amount' => $subTotal,
             ),
             'customer_details' => array(
                 'first_name' => auth()->user()->name,
                 'phone' => auth()->user()->no_hp,
             ),
+            'ignore_duplicate_order_id' => true,
         );
 
-        // Dapatkan Snap Token baru
         $snapToken = \Midtrans\Snap::getSnapToken($params);
-
-        // Update atau simpan Snap Token baru ke dalam database
-        Pemakaian::where('id', $pemakaian_id)->update(['snap_token' => $snapToken]);
-
         return response()->json(['snapToken' => $snapToken]);
-    }
-
-    private function isSnapTokenValid($snapToken)
-    {
-        $midtransBaseUrl = config('midtrans.is_production') ? 'https://api.midtrans.com' : 'https://api.sandbox.midtrans.com';
-        $url = $midtransBaseUrl . '/v2/snap/token/' . $snapToken;
-
-        $client = new \GuzzleHttp\Client();
-
-        try {
-            // Kirim permintaan GET ke API Midtrans untuk memeriksa status Snap Token
-            $response = $client->request('GET', $url, [
-                'headers' => [
-                    'Authorization' => 'Basic ' . base64_encode(config('midtrans.server_key') . ':')
-                ]
-            ]);
-
-            // Periksa status kode respons
-            if ($response->getStatusCode() === 200) {
-                // Token masih berlaku
-                return true;
-            }
-        } catch (\Exception $e) {
-            // Token sudah tidak berlaku
-            return false;
-        }
-
-        return false;
     }
 
     public function callback(Request $request)
@@ -116,11 +72,13 @@ class CekTagihanPelangganController extends Controller
         $serverKey = config('midtrans.server_key');
         $hashed    = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $denda . $serverKey);
 
-        if ($request->transaction_status == 'capture' or $request->transaction_status == 'settlement' or $request->transaction_status == 'pending') {
-            $order_id        = $request->order_id;
+        if ($request->transaction_status == 'capture' or $request->transaction_status == 'settlement') {
+            $order_id_with_timestamp = $request->order_id;
+            [$order_id, $timestamp] = explode('_', $order_id_with_timestamp);
             $gross_amount    = $request->gross_amount;
 
-            $pemakaian = Pemakaian::findOrFail($order_id);
+            $pemakaian = Pemakaian::where('id', $order_id)->firstOrFail();
+
             $pemakaian->update(['status' => 'lunas']);
 
             $tanggal_batas_bayar = new DateTime($pemakaian->batas_bayar);
@@ -143,6 +101,7 @@ class CekTagihanPelangganController extends Controller
             $pembayaran->save();
         }
     }
+
 
     private function calculateMonthDifference($date1, $date2)
     {

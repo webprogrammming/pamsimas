@@ -87,7 +87,9 @@ class PemakaianController extends Controller
         ];
 
         if ($pelanggan) {
-            $pemakaian = Pemakaian::where('user_id', $pelanggan->id)->first();
+            $pemakaian = Pemakaian::where('user_id', $pelanggan->id)
+                ->orderBy('created_at', 'desc')
+                ->first();
             $penggunaan_akhir = ($pemakaian) ? $pemakaian->penggunaan_akhir : 0;
             $dataPelanggan = [
                 'id'                  => $pelanggan->id,
