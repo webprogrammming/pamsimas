@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Saldo;
 use App\Models\Tarif;
 use App\Models\Periode;
 use App\Models\Pemakaian;
+use App\Models\Pembayaran;
+use App\Models\SaldoHistory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Pembayaran;
 use Barryvdh\DomPDF\Facade\pdf as PDF;
 
 
@@ -50,6 +52,8 @@ class PembayaranController extends Controller
 
     public function bayar(Request $request)
     {
+        $m3             = $request->input('m3');
+        $beban          = $request->input('beban');
         $kd_pembayaran  = 'INV-' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
         $pemakaian_id   = $request->input('pemakaian_id');
         $tgl_bayar      = $request->input('tgl_bayar');
@@ -59,6 +63,8 @@ class PembayaranController extends Controller
         $subTotal       = $request->input('jumlah_pembayaran');
 
         $pembayaran = new Pembayaran();
+        $pembayaran->m3              = $m3;
+        $pembayaran->beban           = $beban;
         $pembayaran->kd_pembayaran   = $kd_pembayaran;
         $pembayaran->tgl_bayar       = $tgl_bayar;
         $pembayaran->pemakaian_id    = $pemakaian_id;
@@ -73,10 +79,23 @@ class PembayaranController extends Controller
         $pemakaian->status = 'lunas';
         $pemakaian->save();
 
+        $saldo = Saldo::first();
+        $saldo->saldo += $subTotal;
+        $saldo->save();
+
+        $saldoMasuk = new SaldoHistory([
+            'saldo_id'      => '1',
+            'nominal'       => $subTotal,
+            'keterangan'    => 'Pembayaran pelanggan',
+            'status'        => 'masuk'
+        ]);
+        $saldoMasuk->save();
+
         return response()->json([
             'message'    => 'Tagihan air berhasil dibayar !'
         ], 200);
     }
+
 
     public function printBuktiPembayaran(Request $request, $id)
     {

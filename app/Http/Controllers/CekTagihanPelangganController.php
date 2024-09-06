@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use DateTime;
 use Midtrans\Snap;
 use Midtrans\Config;
+use App\Models\Saldo;
 use App\Models\Tarif;
 use App\Models\Pemakaian;
 use App\Models\Pembayaran;
+use App\Models\SaldoHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -92,6 +94,8 @@ class CekTagihanPelangganController extends Controller
 
             $pembayaran     = new Pembayaran();
             $pembayaran->pemakaian_id    = $pemakaian->id;
+            $pembayaran->m3              = $tarif->m3;
+            $pembayaran->beban           = $tarif->beban;
             $pembayaran->kd_pembayaran   = $kd_pembayaran;
             $pembayaran->tgl_bayar       = $tgl_bayar->format('Y-m-d');
             $pembayaran->uang_cash       = $gross_amount;
@@ -99,6 +103,20 @@ class CekTagihanPelangganController extends Controller
             $pembayaran->denda           = $denda;
             $pembayaran->subTotal        = $gross_amount;
             $pembayaran->save();
+
+            // Update saldo berdasarkan gross_amount
+            $saldo = Saldo::first();
+            $saldo->saldo += $gross_amount; // Tambahkan gross_amount ke saldo
+            $saldo->save();
+
+            // Simpan riwayat saldo masuk
+            $saldoMasuk = new SaldoHistory([
+                'saldo_id'      => '1',
+                'nominal'       => $gross_amount, // Nominal saldo masuk sesuai pembayaran
+                'keterangan'    => 'Pembayaran pelanggan melalui Midtrans',
+                'status'        => 'masuk'
+            ]);
+            $saldoMasuk->save();
         }
     }
 

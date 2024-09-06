@@ -18,9 +18,11 @@ return new class extends Migration
             $table->bigInteger('jumlah_penggunaan');
             $table->bigInteger('jumlah_pembayaran')->nullable();
             $table->date('batas_bayar');
-            $table->foreignId('user_id');
-            $table->foreignId('periode_id');
             $table->enum('status', ['belum dibayar', 'lunas'])->default('belum dibayar');
+            $table->unsignedBigInteger('periode_id');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('periode_id')->references('id')->on('periodes')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

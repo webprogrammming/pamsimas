@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('pembayarans', function (Blueprint $table) {
             $table->id();
+            $table->double('m3');
+            $table->double('beban');
             $table->string('kd_pembayaran')->unique();
             $table->string('tgl_bayar');
             $table->double('uang_cash');

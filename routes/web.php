@@ -1,21 +1,25 @@
 <?php
 
-use App\Http\Controllers\CekTagihanPelangganController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\LaporanPembayaranController;
-use App\Http\Controllers\LihatPemakaianController;
+use App\Models\Pembayaran;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SaldoController;
 use App\Http\Controllers\TahunController;
 use App\Http\Controllers\TarifController;
+use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PemakaianController;
-use App\Http\Controllers\PemakaianPelangganController;
 use App\Http\Controllers\PembayaranController;
-use App\Http\Controllers\PeriodeController;
-use App\Http\Controllers\RiwayatPembayaranController;
+use App\Http\Controllers\SaldoMasukController;
+use App\Http\Controllers\SaldoKeluarController;
+use App\Http\Controllers\LihatPemakaianController;
+use App\Http\Controllers\LaporanKeuanganController;
 use App\Http\Controllers\TagihanTerbayarController;
-use App\Models\Pembayaran;
+use App\Http\Controllers\LaporanPembayaranController;
+use App\Http\Controllers\RiwayatPembayaranController;
+use App\Http\Controllers\PemakaianPelangganController;
+use App\Http\Controllers\CekTagihanPelangganController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,16 +43,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index']);
     });
 
-    Route::group(['middleware'  => 'CheckRole:admin,petugas'], function () {
+    Route::group(['middleware'  => 'CheckRole:petugas,admin'], function () {
         Route::get('/lihat-pemakaian', [LihatPemakaianController::class, 'index']);
+    });
 
+    Route::group(['middleware'  => 'CheckRole:petugas'], function () {
         Route::get('/catat-pemakaian/get-data/{user_id}', [PemakaianController::class, 'getData']);
         Route::get('/catat-pemakaian', [PemakaianController::class, 'index']);
         Route::post('/catat-pemakaian', [PemakaianController::class, 'store']);
         Route::get('/catat-pemakaian/get-data-pelanggan', [PemakaianController::class, 'getDataPelanggan']);
-
-        Route::resource('/periode', PeriodeController::class);
-        Route::resource('/tahun', TahunController::class);
     });
 
     Route::group(['middleware' => 'CheckRole:admin'], function () {
@@ -63,6 +66,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/pelanggan/kartu-pelanggan/{id}', [PelangganController::class, 'print']);
         Route::resource('/pelanggan', PelangganController::class);
 
+        Route::resource('/periode', PeriodeController::class);
+        Route::resource('/tahun', TahunController::class);
+
         Route::get('/pembayaran', [PembayaranController::class, 'index']);
         Route::post('/pembayaran', [PembayaranController::class, 'bayar']);
         Route::post('/pembayaran/get-data/{user_id}/{periode_id}', [PembayaranController::class, 'getData']);
@@ -76,6 +82,20 @@ Route::middleware('auth')->group(function () {
         Route::get('/laporan-pembayaran/get-data', [LaporanPembayaranController::class, 'getLaporanPembayaran']);
         Route::get('/laporan-pembayaran', [LaporanPembayaranController::class, 'index']);
         Route::get('/laporan-pembayaran/print-pembayaran', [LaporanPembayaranController::class, 'printLaporanPembayaran']);
+
+        Route::get('/saldo', [SaldoController::class, 'index']);
+
+        Route::get('/saldo-masuk', [SaldoMasukController::class, 'index']);
+        Route::get('/saldo-masuk/create', [SaldoMasukController::class, 'create']);
+        Route::post('/saldo-masuk', [SaldoMasukController::class, 'store']);
+
+        Route::get('/saldo-keluar', [SaldoKeluarController::class, 'index']);
+        Route::get('/saldo-keluar/create', [SaldoKeluarController::class, 'create']);
+        Route::post('/saldo-keluar', [SaldoKeluarController::class, 'store']);
+
+        Route::get('/laporan-keuangan/get-data', [LaporanKeuanganController::class, 'getLaporanKeuangan']);
+        Route::get('/laporan-keuangan', [LaporanKeuanganController::class, 'index']);
+        Route::get('/laporan-keuangan/print-keuangan', [LaporanKeuanganController::class, 'printLaporanKeuangan']);
     });
 
     Route::group(['middleware'  => 'CheckRole:pelanggan'], function () {

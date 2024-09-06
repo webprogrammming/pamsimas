@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('periodes', function (Blueprint $table) {
             $table->id();
             $table->string('periode');
-            $table->foreignId('bulan_id');
-            $table->foreignId('tahun_id');
+            $table->foreignId('bulan_id')->constrained('bulans');
+            $table->foreignId('tahun_id')->constrained('tahuns');
             $table->enum('status', ['aktif', 'tidak aktif'])->default('tidak aktif');
             $table->timestamps();
         });

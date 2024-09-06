@@ -82,7 +82,8 @@ class PelangganController extends Controller
             'no_hp'         => $request->no_hp,
             'tgl_pasang'    => $request->tgl_pasang,
             'password'      => $request->password,
-            'no_pelanggan'  => $new_no_pelanggan
+            'no_pelanggan'  => $new_no_pelanggan,
+            'role_id'       => 3
         ]);
 
         return redirect('/pelanggan')->with('success', 'Berhasil menambahkan pelanggan baru');

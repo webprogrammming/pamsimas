@@ -7,10 +7,11 @@ namespace Database\Seeders;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Bulan;
-use App\Models\Pemakaian;
-use App\Models\Periode;
+use App\Models\Saldo;
 use App\Models\Tahun;
 use App\Models\Tarif;
+use App\Models\Periode;
+use App\Models\Pemakaian;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,6 +21,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        Role::create([
+            'role'  => 'admin'
+        ]);
+        Role::create([
+            'role'  => 'petugas'
+        ]);
+        Role::create([
+            'role'  => 'pelanggan'
+        ]);
+
+
         User::create([
             'name'      => 'admin',
             'email'     => 'admin@gmail.com',
@@ -32,15 +44,15 @@ class DatabaseSeeder extends Seeder
             'password'  => bcrypt('1234'),
             'role_id'   => 2
         ]);
-        // User::create([
-        //     'no_pelanggan'  => 'PAM0001',
-        //     'name'          => 'Dwi Purnomo',
-        //     'email'         => 'purnomodwi174@gmail.com',
-        //     'no_hp'         => '081229248179',
-        //     'tgl_pasang'    => '2023-10-16',
-        //     'password'      => bcrypt('1234'),
-        //     'role_id'       => 3
-        // ]);
+        User::create([
+            'no_pelanggan'  => 'PAM0001',
+            'name'          => 'Dwi Purnomo',
+            'email'         => 'purnomodwi174@gmail.com',
+            'no_hp'         => '081229248179',
+            'tgl_pasang'    => '2023-10-16',
+            'password'      => bcrypt('1234'),
+            'role_id'       => 3
+        ]);
         // User::create([
         //     'no_pelanggan'  => 'PAM0002',
         //     'name'          => 'Mujiyono',
@@ -50,16 +62,6 @@ class DatabaseSeeder extends Seeder
         //     'password'      => bcrypt('1234'),
         //     'role_id'       => 3
         // ]);
-
-        Role::create([
-            'role'  => 'admin'
-        ]);
-        Role::create([
-            'role'  => 'petugas'
-        ]);
-        Role::create([
-            'role'  => 'pelanggan'
-        ]);
 
         Bulan::create([
             'bulan' => 'Januari'
@@ -100,7 +102,7 @@ class DatabaseSeeder extends Seeder
 
 
         Tahun::create([
-            'tahun' => '2022'
+            'tahun' => '2024'
         ]);
         Tahun::create([
             'tahun' => '2023'
@@ -113,22 +115,26 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Periode::create([
-            'periode'   => 'September 2023',
+            'periode'   => 'September 2024',
             'bulan_id'  => 9,
             'tahun_id'  => 2,
             'status'    => 'Aktif'
         ]);
         Periode::create([
-            'periode'   => 'Oktober 2023',
+            'periode'   => 'Oktober 2024',
             'bulan_id'  => 10,
             'tahun_id'  => 2,
             'status'    => 'Aktif'
         ]);
         Periode::create([
-            'periode'   => 'November 2023',
+            'periode'   => 'November 2024',
             'bulan_id'  => 11,
             'tahun_id'  => 2,
             'status'    => 'Aktif'
+        ]);
+
+        Saldo::create([
+            'saldo' => 0
         ]);
     }
 }

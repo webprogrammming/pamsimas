@@ -21,7 +21,12 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    
+
+                    <div class="alert alert-warning">
+                        Hati-hati Menghapus data periode ! karena akan menghapus seluruh data pemakaian air pelanggan yang
+                        terkait.
+                    </div>
+
                     <div class="table-responsive">
                         <table id="table_id" class="table display">
                             <thead>
@@ -43,19 +48,23 @@
                                         <td>{{ $periode->tahun->tahun }}</td>
                                         <td>
                                             @if ($periode->status == 'tidak aktif')
-                                                <span class="badge text-bg-warning p-2">{{ $periode->status }}</td></span>
-                                            @else
-                                                <span class="badge text-bg-success p-2">{{ $periode->status }}</td></span>
-                                            @endif
-                                        <td>
-                                            <a href="/periode/{{ $periode->id }}/edit" type="button" class="btn btn-warning mb-1"><i class="ti ti-edit"></i></a>
-                                            <form id="{{ $periode->id }}" action="/periode/{{ $periode->id }}" method="POST" class="d-inline">
-                                                @method('delete')
-                                                @csrf
-                                                <button type="button" class="btn btn-danger swal-confirm mb-1" data-form="{{ $periode->id }}"><i class="ti ti-trash"></i></button>
-                                            </form>
-                                        </td>
-                                    </tr>
+                                                <span class="badge text-bg-warning p-2">{{ $periode->status }}
+                                        </td></span>
+                                    @else
+                                        <span class="badge text-bg-success p-2">{{ $periode->status }}</td></span>
+                                @endif
+                                <td>
+                                    <a href="/periode/{{ $periode->id }}/edit" type="button"
+                                        class="btn btn-warning mb-1"><i class="ti ti-edit"></i></a>
+                                    <form id="{{ $periode->id }}" action="/periode/{{ $periode->id }}" method="POST"
+                                        class="d-inline">
+                                        @method('delete')
+                                        @csrf
+                                        <button type="button" class="btn btn-danger swal-confirm mb-1"
+                                            data-form="{{ $periode->id }}"><i class="ti ti-trash"></i></button>
+                                    </form>
+                                </td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -66,10 +75,8 @@
     </div>
 
     <script>
-        $(document).ready( function () {
+        $(document).ready(function() {
             $('#table_id').DataTable();
         });
     </script>
-
-
 @endsection

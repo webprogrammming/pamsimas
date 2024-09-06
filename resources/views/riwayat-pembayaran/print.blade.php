@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,15 +8,15 @@
     <title>Bukti Pembayaran</title>
 </head>
 <style>
-    .container{
+    .container {
         border: 1px solid black;
     }
 
-    .header{
+    .header {
         text-align: center;
     }
 
-    .h3{
+    .h3 {
         text-align: center;
         margin-top: 10px;
         margin-bottom: 10px;
@@ -28,51 +29,54 @@
         margin-bottom: 15px;
     }
 
-    .detail{
+    .detail {
         margin-top: 15px;
         padding-left: 10px;
     }
 
-    .row{
+    .row {
         margin-top: 10px;
         margin-bottom: 20px;
         padding: 30px;
     }
 
-    table{
+    table {
         width: 100%;
         text-align: center;
         padding: 20px;
     }
 
-    table, th, td {
+    table,
+    th,
+    td {
         border: 0 px;
     }
 
-    tr{
+    tr {
         text-align: left;
     }
 </style>
+
 <body>
     <div class="container">
         <div class="header">
             <h2>Bukti Pembayaran Tagihan Air Pamsimas</h2>
-            <p>Desa Karangmulyo, Kecamatan Purwodadi, Kabupaten Purworejo, jawa Tengah 54173</p>
+            <p>Desa Karangmulyo, Kecamatan Purwodadi, Kabupaten Purworejo, Jawa Tengah 54173</p>
         </div>
 
         <hr>
 
         <div class="row">
             <div class="column" style="float: left">
-                Tgl. Bayar    : {{ $pembayaran->tgl_bayar }} <br>
+                Tgl. Bayar : {{ \Carbon\Carbon::parse($pembayaran->tgl_bayar)->translatedFormat('j F Y') }}<br>
                 No Pembayaran : {{ $pembayaran->kd_pembayaran }}
             </div>
             <div class="column">
 
             </div>
             <div class="column" style="float: right">
-                No. Pelanggan   : {{ $pembayaran->pemakaian->user->no_pelanggan }} <br>
-                Nama Pelanggan  : {{ $pembayaran->pemakaian->user->name }}
+                No. Pelanggan : {{ $pembayaran->pemakaian->user->no_pelanggan }} <br>
+                Nama Pelanggan : {{ $pembayaran->pemakaian->user->name }}
             </div>
         </div>
 
@@ -91,7 +95,7 @@
                 <tr>
                     <td><b>Penggunaan m³</b></td>
                     <td>:</td>
-                    <td>{{ $pembayaran->pemakaian->jumlah_penggunaan  }} m³</td>
+                    <td>{{ $pembayaran->pemakaian->jumlah_penggunaan }} m³</td>
                     <hr>
                 </tr>
 
@@ -102,12 +106,12 @@
                 <tr>
                     <td><strong>Biaya per-m³</strong></td>
                     <td>:</td>
-                    <td>Rp. {{ number_format($tarif->m3, 2, ',', '.') }}</td>
+                    <td>Rp. {{ number_format($pembayaran->m3, 2, ',', '.') }}</td>
                 </tr>
                 <tr>
                     <td><strong>Biaya Beban</strong></td>
                     <td>:</td>
-                    <td>Rp. {{ number_format($tarif->beban, 2, ',', '.') }}</td>
+                    <td>Rp. {{ number_format($pembayaran->beban, 2, ',', '.') }}</td>
                 </tr>
                 <tr>
                     <td><strong>Denda</strong></td>
@@ -135,8 +139,11 @@
                     <td>Rp. {{ number_format($pembayaran->kembalian, 2, ',', '.') }}</td>
                 </tr>
             </table>
-            <p class="lunas" style="text-align: center">Periode {{ $pembayaran->pemakaian->periode->periode }} <b>LUNAS !!!</b></p>
+            <p class="lunas" style="text-align: center">Periode {{ $pembayaran->pemakaian->periode->periode }}
+                <b>LUNAS !!!</b>
+            </p>
         </div>
     </div>
 </body>
+
 </html>

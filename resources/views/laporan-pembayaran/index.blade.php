@@ -10,7 +10,8 @@
                             <h5 class="card-title fw-semibold text-white">Laporan Pembayaran</h5>
                         </div>
                         <div class="col-6">
-                            <a href="javascript:void(0)" id="print-laporan-pembayaran" target="_blank" class="btn btn-warning float-end">Print PDF</a>
+                            <a href="javascript:void(0)" id="print-laporan-pembayaran" target="_blank"
+                                class="btn btn-warning float-end">Print PDF</a>
                         </div>
                     </div>
                 </div>
@@ -40,7 +41,7 @@
                             </div>
                         </form>
                     </div>
-    
+
                     <div class="table-responsive">
                         <table id="table_id" class="table display">
                             <thead>
@@ -54,88 +55,101 @@
                             </thead>
                             <tbody>
                             </tbody>
-                        </table>    
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-<!-- Datatables Jquery -->
-<script>
-    $(document).ready(function () {
-        let table = $('#table_id').DataTable();
+    <!-- Datatables Jquery -->
+    <script>
+        $(document).ready(function() {
+            let table = $('#table_id').DataTable();
 
-        loadData();
-
-        $('#filter_form').submit(function (event) {
-            event.preventDefault();
             loadData();
-        });
 
-        $('#refresh_btn').on('click', function () { 
-            refreshTable();
-        });
-
-
-        function loadData() {
-            var tanggalMulai    = $('#tanggal_mulai').val();
-            var tanggalSelesai  = $('#tanggal_selesai').val();
-
-            $.ajax({
-                url: '/riwayat-pembayaran/get-data',
-                type: "GET",
-                dataType: 'JSON',
-                data: {
-                    tanggal_mulai: tanggalMulai,
-                    tanggal_selesai: tanggalSelesai
-                },
-                success: function (response) {
-                    let counter = 1;
-                    table.clear().draw();
-
-                    if (response.length === 0) {
-                        $('#table_id tbody');
-                    } else {
-                        $.each(response, function (key, value) {
-                            let subTotal  = parseFloat(value.subTotal).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
-                            var rawDate = value.tgl_bayar;
-                            var formattedDate = new Date(rawDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'numeric', year: 'numeric' });
-                            let riwayatPembayaran = `
-                                <tr class="barang-row" id="index_${value.id}">
-                                    <td>${counter++}</td>
-                                    <td>${value.kd_pembayaran}</td>
-                                    <td>${formattedDate}</td>
-                                    <td>${value.pemakaian.user.name}</td>
-                                    <td>${subTotal}</td>
-                                </tr>
-                            `;
-                            table.row.add($(riwayatPembayaran)).draw(false);
-                        });
-                    }
-                }
+            $('#filter_form').submit(function(event) {
+                event.preventDefault();
+                loadData();
             });
 
-        }
+            $('#refresh_btn').on('click', function() {
+                refreshTable();
+            });
 
-        function refreshTable(){
-            $('#filter_form')[0].reset();
-            loadData();
-        }
 
-        $('#print-laporan-pembayaran').on('click', function(){
-            var tanggalMulai    = $('#tanggal_mulai').val();
-            var tanggalSelesai  = $('#tanggal_selesai').val();
+            function loadData() {
+                var tanggalMulai = $('#tanggal_mulai').val();
+                var tanggalSelesai = $('#tanggal_selesai').val();
 
-            var url = '/laporan-pembayaran/print-pembayaran';
+                $.ajax({
+                    url: '/riwayat-pembayaran/get-data',
+                    type: "GET",
+                    dataType: 'JSON',
+                    data: {
+                        tanggal_mulai: tanggalMulai,
+                        tanggal_selesai: tanggalSelesai
+                    },
+                    success: function(response) {
+                        let counter = 1;
+                        table.clear().draw();
 
-            if(tanggalMulai && tanggalSelesai){
-                url += '?tanggal_mulai=' + tanggalMulai + '&tanggal_selesai=' + tanggalSelesai;
+                        if (response.length === 0) {
+                            $('#table_id tbody');
+                        } else {
+                            $.each(response, function(key, value) {
+                                let subTotal = parseFloat(value.subTotal).toLocaleString(
+                                    'id-ID', {
+                                        style: 'currency',
+                                        currency: 'IDR'
+                                    });
+
+                                var rawDate = value.tgl_bayar;
+                                var formattedDate = new Date(rawDate).toLocaleDateString(
+                                    'id-ID', {
+                                        day: 'numeric',
+                                        month: 'long',
+                                        year: 'numeric'
+                                    });
+
+                                let riwayatPembayaran = `
+                                    <tr class="barang-row" id="index_${value.id}">
+                                        <td>${counter++}</td>
+                                        <td>${value.kd_pembayaran}</td>
+                                        <td>${formattedDate}</td>
+                                        <td>${value.pemakaian.user.name}</td>
+                                        <td>${subTotal}</td>
+                                    </tr>
+                                `;
+
+                                table.row.add($(riwayatPembayaran)).draw(false);
+                            });
+
+                        }
+                    }
+                });
+
             }
 
-            window.location.href = url;
-        });
+            function refreshTable() {
+                $('#filter_form')[0].reset();
+                loadData();
+            }
 
-    });
-</script>
+            $('#print-laporan-pembayaran').on('click', function() {
+                var tanggalMulai = $('#tanggal_mulai').val();
+                var tanggalSelesai = $('#tanggal_selesai').val();
+
+                var url = '/laporan-pembayaran/print-pembayaran';
+
+                if (tanggalMulai && tanggalSelesai) {
+                    url += '?tanggal_mulai=' + tanggalMulai + '&tanggal_selesai=' + tanggalSelesai;
+                }
+
+                window.location.href = url;
+            });
+
+        });
+    </script>
 @endsection

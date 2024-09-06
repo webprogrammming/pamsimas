@@ -6,8 +6,12 @@
             <div class="card">
                 <div class="card-header bg-primary">
                     <div class="row align-items-center">
-                        <div class="col">
-                            <h5 class="card-title fw-semibold text-white">Riwayat Pembayaran</h5>
+                        <div class="col-6">
+                            <h5 class="card-title fw-semibold text-white">Laporan Keuangan</h5>
+                        </div>
+                        <div class="col-6">
+                            <a href="javascript:void(0)" id="print-laporan-keuangan" target="_blank"
+                                class="btn btn-warning float-end">Print PDF</a>
                         </div>
                     </div>
                 </div>
@@ -43,11 +47,10 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Kode Pembayaran</th>
-                                    <th>Tgl. Bayar</th>
-                                    <th>Pelanggan</th>
-                                    <th>Sub Total</th>
-                                    <th>Print Struk</th>
+                                    <th>Tanggal</th>
+                                    <th>Nominal</th>
+                                    <th>Status</th>
+                                    <th>Keterangan</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -81,7 +84,7 @@
                 var tanggalSelesai = $('#tanggal_selesai').val();
 
                 $.ajax({
-                    url: '/riwayat-pembayaran/get-data',
+                    url: '/laporan-keuangan/get-data',
                     type: "GET",
                     dataType: 'JSON',
                     data: {
@@ -96,30 +99,38 @@
                             $('#table_id tbody');
                         } else {
                             $.each(response, function(key, value) {
-                                let subTotal = parseFloat(value.subTotal).toLocaleString(
+                                let nominal = parseFloat(value.nominal).toLocaleString(
                                     'id-ID', {
                                         style: 'currency',
                                         currency: 'IDR'
                                     });
-                                var rawDate = value.tgl_bayar;
+                                var rawDate = value.created_at;
                                 var formattedDate = new Date(rawDate).toLocaleDateString(
                                     'id-ID', {
                                         day: 'numeric',
                                         month: 'long',
                                         year: 'numeric'
                                     });
-                                let riwayatPembayaran = `
-                                <tr class="barang-row" id="index_${value.id}">
-                                    <td>${counter++}</td>
-                                    <td>${value.kd_pembayaran}</td>
-                                    <td>${formattedDate}</td>
-                                    <td>${value.pemakaian.user.name}</td>
-                                    <td>${subTotal}</td>
-                                    <td><a href="/riwayat-pembayaran/print/${value.id}" class="btn btn-success">Struk</a></td>
-                                </tr>
-                            `;
-                                table.row.add($(riwayatPembayaran)).draw(false);
+
+                                let badgeClass = '';
+                                if (value.status === 'masuk') {
+                                    badgeClass = 'badge text-bg-success pb-2';
+                                } else if (value.status === 'keluar') {
+                                    badgeClass = 'badge text-bg-warning pb-2';
+                                }
+
+                                let saldo = `
+                                    <tr class="barang-row" id="index_${value.id}">
+                                        <td>${counter++}</td>
+                                        <td>${formattedDate}</td>
+                                        <td>${nominal}</td>
+                                        <td><span class="badge ${badgeClass}">${value.status}</span></td>
+                                        <td>${value.keterangan}</td>
+                                    </tr>
+                                `;
+                                table.row.add($(saldo)).draw(false);
                             });
+
                         }
                     }
                 });
@@ -131,18 +142,19 @@
                 loadData();
             }
 
-            // $('#print-laporan-laba-kotor').on('click', function(){
-            //     var tanggalMulai    = $('#tanggal_mulai').val();
-            //     var tanggalSelesai  = $('#tanggal_selesai').val();
+            $('#print-laporan-keuangan').on('click', function() {
+                var tanggalMulai = $('#tanggal_mulai').val();
+                var tanggalSelesai = $('#tanggal_selesai').val();
 
-            //     var url = '/laporan-laba-kotor/print-laba-kotor';
+                var url = '/laporan-keuangan/print-keuangan';
 
-            //     if(tanggalMulai && tanggalSelesai){
-            //         url += '?tanggal_mulai=' + tanggalMulai + '&tanggal_selesai=' + tanggalSelesai;
-            //     }
+                if (tanggalMulai && tanggalSelesai) {
+                    url += '?tanggal_mulai=' + tanggalMulai + '&tanggal_selesai=' + tanggalSelesai;
+                }
 
-            //     window.location.href = url;
-            // });
+                window.location.href = url;
+            });
+
         });
     </script>
 @endsection
