@@ -6,7 +6,8 @@
     </div>
     <div class="col-lg-6">
         <div class="py-6">
-            <p class="mb-0 float-end">Developed by <a href="https://idewebku.com" target="_blank">Idewebku.com</a></p>
+            <p class="mb-0 float-end">Developed by <a href="https://inovasicode.com" target="_blank">Inovasicode.com</a>
+            </p>
         </div>
     </div>
 </div>

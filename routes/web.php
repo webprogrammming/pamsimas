@@ -20,6 +20,8 @@ use App\Http\Controllers\LaporanPembayaranController;
 use App\Http\Controllers\RiwayatPembayaranController;
 use App\Http\Controllers\PemakaianPelangganController;
 use App\Http\Controllers\CekTagihanPelangganController;
+use App\Http\Controllers\SettingsMidtransController;
+use App\Models\SettingsMidtrans;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,7 +42,7 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::group(['middleware' => 'CheckRole:admin,petugas,pelanggan'], function () {
         Route::get('/', [DashboardController::class, 'index']);
-        Route::get('/dashboard', [DashboardController::class, 'index']);
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     });
 
     Route::group(['middleware'  => 'CheckRole:petugas,admin'], function () {
@@ -70,7 +72,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('/tahun', TahunController::class);
 
         Route::get('/pembayaran', [PembayaranController::class, 'index']);
-        Route::post('/pembayaran', [PembayaranController::class, 'bayar']);
+        Route::post('/pembayaran', [PembayaranController::class, 'paymentProcess']);
         Route::post('/pembayaran/get-data/{user_id}/{periode_id}', [PembayaranController::class, 'getData']);
         Route::get('/tarif/get-data/{user_id}', [PembayaranController::class, 'getTarifData']);
         Route::get('/pembayaran/bukti-pembayaran/{id}', [PembayaranController::class, 'printBuktiPembayaran']);
@@ -103,7 +105,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/cek-tagihan', [CekTagihanPelangganController::class, 'index']);
         Route::get('/cek-tagihan/{id}', [CekTagihanPelangganController::class, 'detailTagihan']);
-        Route::post('/cek-tagihan/bayar', [CekTagihanPelangganController::class, 'bayar']);
+        Route::post('/cek-tagihan/bayar', [CekTagihanPelangganController::class, 'paymentProcess']);
 
         Route::get('/tagihan-terbayar/get-data', [TagihanTerbayarController::class, 'getRiwayatPembayaran']);
         Route::get('/tagihan-terbayar', [TagihanTerbayarController::class, 'index']);

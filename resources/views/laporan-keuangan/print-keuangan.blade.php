@@ -8,74 +8,58 @@
     <title>Laporan Keuangan</title>
     <style>
         .container {
-            border: 1px solid black;
-            padding: 20px;
-        }
-
-        .header {
             text-align: center;
-        }
-
-        .h3 {
-            text-align: center;
-            margin-top: 10px;
-            margin-bottom: 10px;
+            margin: auto;
         }
 
         .column {
             text-align: center;
-            width: 100%;
-            margin-bottom: 15px;
         }
 
-        .detail {
-            margin-top: 15px;
-            padding-left: 10px;
-        }
-
-        .row {
-            margin-top: 10px;
-            margin-bottom: 20px;
-            padding: 30px;
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
         }
 
         table {
+            margin: auto;
             width: 100%;
-            text-align: center;
-            border-collapse: collapse;
-            /* Menyatukan border antar-sel */
+        }
+
+        tr {
+            text-align: left;
         }
 
         table,
         th,
         td {
+            border-collapse: collapse;
             border: 1px solid black;
-            /* Menampilkan border pada tabel, th, dan td */
         }
 
         th,
         td {
-            padding: 10px;
-            /* Menambahkan padding di dalam sel */
-            text-align: left;
+            padding: 5px;
+        }
+
+        th,
+        tfoot {
+            background-color: gainsboro;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="header">
-            <h2>Laporan Pembayaran Tagihan Air Pamsimas</h2>
-            <p>Desa Karangmulyo, Kecamatan Purwodadi, Kabupaten Purworejo, Jawa Tengah 54173</p>
-        </div>
-        <hr>
         <div class="row">
             <div class="column">
-                <h3 style="text-align: center;">Laporan Pembayaran Air
+                <h2>PAMSIMAS TIRTOMULYO</h2>
+                <p>Desa Kalirejo, Kecamatan Wirosari, Kabupaten Grobogan, Jawa Tengah</p>
+                <hr style="width: 85%; text-align: center;">
+                <h3 style="text-align: center;">Laporan Keuangan
                     {{ $tanggalMulai && $tanggalSelesai
-                        ? \Carbon\Carbon::parse($tanggalMulai)->translatedFormat('j F Y') .
-                            ' - ' .
-                            \Carbon\Carbon::parse($tanggalSelesai)->translatedFormat('j F Y')
+                        ? date('d-m-Y', strtotime($tanggalMulai)) . ' - ' . date('d-m-Y', strtotime($tanggalSelesai))
                         : 'Semua Range Tanggal' }}
                 </h3>
             </div>
@@ -94,7 +78,7 @@
                         @foreach ($data as $history)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ \Carbon\Carbon::parse($history->created_at)->translatedFormat('j F Y') }}</td>
+                                <td>{{ $history->created_at->format('d-m-Y') }}</td>
                                 <td>Rp. {{ number_format($history->nominal, 2, ',', '.') }}</td>
                                 <td>
                                     @if ($history->status == 'masuk')

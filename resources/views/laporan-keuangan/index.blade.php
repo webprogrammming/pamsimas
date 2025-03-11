@@ -108,7 +108,7 @@
                                 var formattedDate = new Date(rawDate).toLocaleDateString(
                                     'id-ID', {
                                         day: 'numeric',
-                                        month: 'long',
+                                        month: 'numeric',
                                         year: 'numeric'
                                     });
 

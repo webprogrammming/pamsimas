@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('periode');
             $table->foreignId('bulan_id')->constrained('bulans');
-            $table->foreignId('tahun_id')->constrained('tahuns');
+            $table->foreignId('tahun_id')->constrained('tahuns')->onDelete('cascade');
             $table->enum('status', ['aktif', 'tidak aktif'])->default('tidak aktif');
             $table->timestamps();
         });

@@ -282,10 +282,15 @@
                 var beban = $('#beban').val();
                 var tgl_bayar = $('#tgl_bayar').val();
                 var pemakaianId = $('#pemakaian_id').val();
-                var uangCash = $('#uang_cash').val();
+                var uangCash = parseFloat($('#uang_cash').val());
                 var kembalian = $('#kembalian').val();
-                var denda = $('#denda').text();
-                var jumlah_pembayaran = $('#jumlah_pembayaran').text();
+                var denda = parseFloat($('#denda').text());
+                var jumlah_pembayaran = parseFloat($('#jumlah_pembayaran').text());
+
+                if (uangCash < jumlah_pembayaran) {
+                    $('#alert-error').text('Uang cash tidak mencukupi untuk pembayaran!').show();
+                    return;
+                }
 
                 $.ajax({
                     type: 'POST',

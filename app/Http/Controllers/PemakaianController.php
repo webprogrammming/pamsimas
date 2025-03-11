@@ -98,7 +98,6 @@ class PemakaianController extends Controller
             ];
         }
 
-
         return response()->json($dataPelanggan);
     }
 }

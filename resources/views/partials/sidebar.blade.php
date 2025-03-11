@@ -3,7 +3,7 @@
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
             <a href="/" class="text-nowrap logo-img my-2 d-flex align-items-center">
-                <img src="assets/images/auth/logo.png" alt="Logo" style="max-height:50px; margin-right: 10px;">
+                <img src="/assets/images/auth/logo.png" alt="Logo" style="max-height:50px; margin-right: 10px;">
                 <h3 style="margin: 0;">PAMSIMAS</h3>
             </a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
@@ -158,6 +158,21 @@
                         </a>
                     </li>
                 </ul>
+
+                {{-- <ul id="sidebarnav">
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">Settings</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/settings-midtrans" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-wallet"></i>
+                            </span>
+                            <span class="hide-menu">Midtrans</span>
+                        </a>
+                    </li>
+                </ul> --}}
 
             </nav>
         @elseif(auth()->user()->role->role === 'petugas')

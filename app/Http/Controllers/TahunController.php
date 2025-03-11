@@ -83,8 +83,9 @@ class TahunController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Tahun $tahun)
+    public function destroy($id)
     {
+        $tahun = Tahun::find($id);
         $tahun->delete();
         return redirect()->back()->with('success', 'Berhasil menghapus data tahun');
     }

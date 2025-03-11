@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Bulan;
 use App\Models\Tahun;
 use App\Models\Periode;
@@ -28,7 +29,7 @@ class PeriodeController extends Controller
     {
         return view('periode.create', [
             'bulans'    => Bulan::all(),
-            'tahuns'    => Tahun::all() 
+            'tahuns'    => Tahun::all()
         ]);
     }
 
@@ -42,7 +43,7 @@ class PeriodeController extends Controller
             'bulan_id'  => 'required',
             'tahun_id'  => 'required',
         ], [
-            'periode.required'  => 'Form wajib diisi !', 
+            'periode.required'  => 'Form wajib diisi !',
             'bulan_id.required' => 'Pilih bulan !',
             'tahun_id.required' => 'Pilih tahun !'
         ]);
@@ -68,7 +69,7 @@ class PeriodeController extends Controller
         return view('periode.edit', [
             'periode'   => $periode,
             'bulans'    => Bulan::all(),
-            'tahuns'    => Tahun::all() 
+            'tahuns'    => Tahun::all()
         ]);
     }
 
@@ -83,7 +84,7 @@ class PeriodeController extends Controller
             'tahun_id'  => 'required',
             'status'    => 'required'
         ], [
-            'periode.required'  => 'Form wajib diisi !', 
+            'periode.required'  => 'Form wajib diisi !',
             'bulan_id.required' => 'Pilih bulan !',
             'tahun_id.required' => 'Pilih tahun !',
             'status.required'   => 'Pilih status'
@@ -106,9 +107,11 @@ class PeriodeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Periode $periode)
+    public function destroy($id)
     {
+        $periode = Periode::find($id);
         $periode->delete();
+
         return redirect()->back()->with('success', 'Berhasil menghapus data periode !');
     }
 }

@@ -12,6 +12,7 @@ use App\Models\Tahun;
 use App\Models\Tarif;
 use App\Models\Periode;
 use App\Models\Pemakaian;
+use App\Models\SettingsMidtrans;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -35,13 +36,13 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name'      => 'admin',
             'email'     => 'admin@gmail.com',
-            'password'  => bcrypt('1234'),
+            'password'  => bcrypt('password'),
             'role_id'   => 1
         ]);
         User::create([
             'name'      => 'petugas',
             'email'     => 'petugas@gmail.com',
-            'password'  => bcrypt('1234'),
+            'password'  => bcrypt('password'),
             'role_id'   => 2
         ]);
         User::create([
@@ -50,18 +51,36 @@ class DatabaseSeeder extends Seeder
             'email'         => 'purnomodwi174@gmail.com',
             'no_hp'         => '081229248179',
             'tgl_pasang'    => '2023-10-16',
-            'password'      => bcrypt('1234'),
+            'password'      => bcrypt('password'),
             'role_id'       => 3
         ]);
-        // User::create([
-        //     'no_pelanggan'  => 'PAM0002',
-        //     'name'          => 'Mujiyono',
-        //     'email'         => 'mujiyono@gmail.com',
-        //     'no_hp'         => '081229248179',
-        //     'tgl_pasang'    => '2023-10-16',
-        //     'password'      => bcrypt('1234'),
-        //     'role_id'       => 3
-        // ]);
+        User::create([
+            'no_pelanggan'  => 'PAM0002',
+            'name'          => 'Mujiyono',
+            'email'         => 'mujiyono@gmail.com',
+            'no_hp'         => '081229248179',
+            'tgl_pasang'    => '2023-10-16',
+            'password'      => bcrypt('password'),
+            'role_id'       => 3
+        ]);
+        User::create([
+            'no_pelanggan'  => 'PAM0003',
+            'name'          => 'Robert Davis Chaniago',
+            'email'         => 'robert@gmail.com',
+            'no_hp'         => '081229248179',
+            'tgl_pasang'    => '2023-10-16',
+            'password'      => bcrypt('password'),
+            'role_id'       => 3
+        ]);
+        User::create([
+            'no_pelanggan'  => 'PAM0004',
+            'name'          => 'Budiono Siregar',
+            'email'         => 'budiono@gmail.com',
+            'no_hp'         => '081229248179',
+            'tgl_pasang'    => '2023-10-16',
+            'password'      => bcrypt('password'),
+            'role_id'       => 3
+        ]);
 
         Bulan::create([
             'bulan' => 'Januari'
@@ -102,6 +121,9 @@ class DatabaseSeeder extends Seeder
 
 
         Tahun::create([
+            'tahun' => '2025'
+        ]);
+        Tahun::create([
             'tahun' => '2024'
         ]);
         Tahun::create([
@@ -115,21 +137,21 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Periode::create([
-            'periode'   => 'September 2024',
-            'bulan_id'  => 9,
-            'tahun_id'  => 2,
+            'periode'   => 'Januari 2025',
+            'bulan_id'  => 1,
+            'tahun_id'  => 1,
             'status'    => 'Aktif'
         ]);
         Periode::create([
-            'periode'   => 'Oktober 2024',
-            'bulan_id'  => 10,
-            'tahun_id'  => 2,
+            'periode'   => 'Februari 2025',
+            'bulan_id'  => 2,
+            'tahun_id'  => 1,
             'status'    => 'Aktif'
         ]);
         Periode::create([
-            'periode'   => 'November 2024',
-            'bulan_id'  => 11,
-            'tahun_id'  => 2,
+            'periode'   => 'Maret 2025',
+            'bulan_id'  => 3,
+            'tahun_id'  => 1,
             'status'    => 'Aktif'
         ]);
 

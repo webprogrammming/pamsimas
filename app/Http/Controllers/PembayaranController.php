@@ -50,7 +50,7 @@ class PembayaranController extends Controller
         return response()->json(['message' => 'Data tarif tidak ditemukan.']);
     }
 
-    public function bayar(Request $request)
+    public function paymentProcess(Request $request)
     {
         $m3             = $request->input('m3');
         $beban          = $request->input('beban');
@@ -61,6 +61,13 @@ class PembayaranController extends Controller
         $kembalian      = $request->input('kembalian');
         $denda          = $request->input('denda');
         $subTotal       = $request->input('jumlah_pembayaran');
+
+        if ($uang_cash < $subTotal) {
+            return response()->json([
+                'message' => 'Uang cash tidak mencukupi untuk pembayaran!',
+            ], 400);
+        }
+
 
         $pembayaran = new Pembayaran();
         $pembayaran->m3              = $m3;

@@ -37,7 +37,7 @@ class CekTagihanPelangganController extends Controller
         ]);
     }
 
-    public function bayar(Request $request)
+    public function paymentProcess(Request $request)
     {
         $pemakaian_id = $request->input('pemakaian_id');
         $subTotal = $request->input('jumlah_pembayaran');
@@ -49,12 +49,12 @@ class CekTagihanPelangganController extends Controller
 
         $params = array(
             'transaction_details' => array(
-                'order_id' => $pemakaian_id . '_' . time(),
-                'gross_amount' => $subTotal,
+                'order_id'      => $pemakaian_id . '_' . time(),
+                'gross_amount'  => $subTotal,
             ),
             'customer_details' => array(
-                'first_name' => auth()->user()->name,
-                'phone' => auth()->user()->no_hp,
+                'first_name'    => auth()->user()->name,
+                'phone'         => auth()->user()->no_hp,
             ),
             'ignore_duplicate_order_id' => true,
         );
@@ -119,7 +119,6 @@ class CekTagihanPelangganController extends Controller
             $saldoMasuk->save();
         }
     }
-
 
     private function calculateMonthDifference($date1, $date2)
     {
