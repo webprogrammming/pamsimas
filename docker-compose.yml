@@ -5,12 +5,14 @@ services:
     build:
       context: .
     container_name: pamsimas-app
+    working_dir: /var/www/html
     volumes:
       - ./:/var/www/html
     expose:
       - "9000"
     networks:
       - pam-network
+    restart: unless-stopped
 
   nginx:
     image: nginx:latest
@@ -19,11 +21,32 @@ services:
       - "80:80"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./:/var/www/html
     depends_on:
       - app
+    networks:
+      - pam-network
+    restart: unless-stopped
+
+  db:
+    image: mysql:8
+    container_name: pamsimas-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: pamsimas
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: admin123
+      MYSQL_PASSWORD: admin123
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
     networks:
       - pam-network
 
 networks:
   pam-network:
     driver: bridge
+
+volumes:
+  db_data:
