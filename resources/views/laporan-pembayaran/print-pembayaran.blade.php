@@ -65,15 +65,16 @@
 <body>
     <div class="container">
         <div class="header">
-            <h2>Laporan Pembayaran Tagihan Air Pamsimas</h2>
-            <p>Desa Karangmulyo, Kecamatan Purwodadi, Kabupaten Purworejo, Jawa Tengah 54173</p>
+            <h3>LAPORAN PEMBAYARAN TAGIHAN LAYANAN PAMDes</h3>
+            <h3>BUMDES SALING SEDOK</h3>
+            <h3>KEC. SAKRA KAB. LOMBOK TIMUR</h3>
         </div>
 
         <hr>
 
         <div class="row">
             <div class="column">
-                <h3 style="text-align: center;">Laporan Pembayaran Air
+                <h3 style="text-align: center;">Laporan Pembayaran Tagihan Layanan PAMDes
                     {{ $tanggalMulai && $tanggalSelesai
                         ? \Carbon\Carbon::parse($tanggalMulai)->translatedFormat('j F Y') .
                             ' - ' .
@@ -89,6 +90,10 @@
                     <tr>
                         <th>No</th>
                         <th>Kode Transaksi</th>
+                        <th>Tagihan Air</th>
+                        <th>Sampah</th>
+                        <th>Sb. Masjid</th>
+                        <th>Denda</th>
                         <th>Tgl. Pembayaran</th>
                         <th>Pelanggan</th>
                         <th>Sub Total</th>
@@ -99,6 +104,12 @@
                         <tr>
                             <td style="text-align: center">{{ $loop->iteration }}</td>
                             <td>{{ $pembayaran->kd_pembayaran }}</td>
+                            <td>Rp.
+                                {{ number_format($tarif->m3 * $pembayaran->pemakaian->jumlah_penggunaan) }}
+                            </td>
+                            <td>Rp. {{ number_format($pembayaran->sampah) }}</td>
+                            <td>Rp. {{ number_format($pembayaran->masjid) }}</td>
+                            <td>Rp. {{ number_format($pembayaran->denda) }}</td>
                             <td>{{ \Carbon\Carbon::parse($pembayaran->tgl_bayar)->translatedFormat('j F Y') }}</td>
                             <td>{{ $pembayaran->pemakaian->user->name }}</td>
                             <td>Rp. {{ number_format($pembayaran->subTotal, 2, ',', '.') }}</td>

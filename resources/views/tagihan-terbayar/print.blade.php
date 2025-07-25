@@ -1,142 +1,202 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Bukti Pembayaran</title>
+    <title>Struk Pembayaran Air</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+        }
+
+        .struk {
+            width: 100%;
+            margin: 10px auto;
+            border: 2px solid #000080;
+            background-color: #d7ebff;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .left {
+            text-align: left;
+        }
+
+        .right {
+            text-align: right;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .highlight {
+            color: red;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .small {
+            font-size: 12px;
+        }
+
+        hr {
+            border: 1px dashed #000;
+            margin: 10px 0;
+        }
+    </style>
 </head>
-<style>
-    .container{
-        border: 1px solid black;
-    }
 
-    .header{
-        text-align: center;
-    }
-
-    .h3{
-        text-align: center;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-
-    .column {
-        float: left;
-        text-align: left;
-        width: 33.33%;
-        margin-bottom: 15px;
-    }
-
-    .detail{
-        margin-top: 15px;
-        padding-left: 10px;
-    }
-
-    .row{
-        margin-top: 10px;
-        margin-bottom: 20px;
-        padding: 30px;
-    }
-
-    table{
-        width: 100%;
-        text-align: center;
-        padding: 20px;
-    }
-
-    table, th, td {
-        border: 0 px;
-    }
-
-    tr{
-        text-align: left;
-    }
-</style>
 <body>
-    <div class="container">
-        <div class="header">
-            <h2>Bukti Pembayaran Tagihan Air Pamsimas</h2>
-            <p>Desa Karangmulyo, Kecamatan Purwodadi, Kabupaten Purworejo, jawa Tengah 54173</p>
-        </div>
+
+    <div class="struk">
+        <table>
+            <tr>
+                <td style="width: 20%;"><img src="data:image/png;base64,{{ $logoLombok }}" alt="Logo" width="60">
+                </td>
+                <td class="center bold" style="width: 60%;">
+                    "BUMDES SALING SEDOK"<br>
+                    PAMDES DESA PERESAK<br>
+                    KEC. SAKRA KAB. LOMBOK TIMUR
+                </td>
+                <td class="right" style="width: 20%;"><img src="data:image/png;base64,{{ $logoBumdes }}"
+                        alt="Logo BUMDES" width="60"></td>
+            </tr>
+        </table>
 
         <hr>
 
-        <div class="row">
-            <div class="column" style="float: left">
-                Tgl. Bayar    : {{ $pembayaran->tgl_bayar }} <br>
-                No Pembayaran : {{ $pembayaran->kd_pembayaran }}
-            </div>
-            <div class="column">
+        <!-- Info & Tagihan (2 kolom) -->
+        <table style="width: 100%;">
+            <tr>
+                <!-- Kolom Kiri -->
+                <td style="width: 50%; vertical-align: top;">
+                    <table>
+                        <tr>
+                            <td style="width: 40%;">Bulan</td>
+                            <td style="width: 5%;">:</td>
+                            <td><strong>{{ $pembayaran->pemakaian->periode->periode }}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>No. ID</td>
+                            <td>:</td>
+                            <td>{{ $pembayaran->pemakaian->user->no_pelanggan }}</td>
+                        </tr>
+                        <tr>
+                            <td>Nama</td>
+                            <td>:</td>
+                            <td>{{ $pembayaran->pemakaian->user->name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Alamat</td>
+                            <td>:</td>
+                            <td>PERESAK IDIK</td>
+                        </tr>
+                        <tr>
+                            <td>PAMDes</td>
+                            <td>:</td>
+                            <td>"SALING SEDOK"</td>
+                        </tr>
+                        <tr>
+                            <td>Meter Awal</td>
+                            <td>:</td>
+                            <td>{{ $pembayaran->pemakaian->penggunaan_awal }} M<sup>3</sup></td>
+                        </tr>
+                        <tr>
+                            <td>Meter Akhir</td>
+                            <td>:</td>
+                            <td>{{ $pembayaran->pemakaian->penggunaan_akhir }} M<sup>3</sup></td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>:</td>
+                            <td><strong>{{ $pembayaran->pemakaian->status }}</strong></td>
+                        </tr>
+                    </table>
+                </td>
 
-            </div>
-            <div class="column" style="float: right">
-                No. Pelanggan   : {{ $pembayaran->pemakaian->user->no_pelanggan }} <br>
-                Nama Pelanggan  : {{ $pembayaran->pemakaian->user->name }}
-            </div>
-        </div>
+                <!-- Kolom Kanan -->
+                <td style="width: 50%; vertical-align: top;">
+                    <table>
+                        <tr>
+                            <td style="width: 40%;">Pakai</td>
+                            <td style="width: 5%;">:</td>
+                            <td>{{ $pembayaran->pemakaian->jumlah_penggunaan }} M<sup>3</sup></td>
+                        </tr>
+                        <tr>
+                            <td>Total Tagihan Air</td>
+                            <td>:</td>
+                            <td>Rp.
+                                {{ number_format($tarif->m3 * $pembayaran->pemakaian->jumlah_penggunaan, 0, ',', '.') }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Beban</td>
+                            <td>:</td>
+                            <td>Rp. {{ number_format($pembayaran->beban) }}</td>
+                        </tr>
+                        <tr>
+                            <td>Sampah</td>
+                            <td>:</td>
+                            <td>Rp. {{ number_format($pembayaran->sampah) }}</td>
+                        </tr>
+                        <tr>
+                            <td>Sb. Masjid</td>
+                            <td>:</td>
+                            <td>Rp. {{ number_format($pembayaran->masjid) }}</td>
+                        </tr>
+                        <tr>
+                            <td>Denda</td>
+                            <td>:</td>
+                            <td>Rp. {{ number_format($pembayaran->denda) }}</td>
+                        </tr>
+                        <tr>
+                            <td style="color: red; font-weight: bold;">Total Bayar</td>
+                            <td style="color: red; font-weight: bold;">:</td>
+                            <td style="color: red; font-weight: bold;">Rp. {{ number_format($pembayaran->subTotal) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tanggal Pembayaran</td>
+                            <td>:</td>
+                            <td>{{ \Carbon\Carbon::parse($pembayaran->tgl_bayar)->translatedFormat('j F Y') }}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
 
-        <div class="detail">
-            <table>
-                <tr>
-                    <td><b>Penggunaan Awal</b></td>
-                    <td>:</td>
-                    <td>{{ $pembayaran->pemakaian->penggunaan_awal }} m³</td>
-                </tr>
-                <tr>
-                    <td><b>Penggunaan Akhir</b></td>
-                    <td>:</td>
-                    <td>{{ $pembayaran->pemakaian->penggunaan_akhir }} m³</td>
-                </tr>
-                <tr>
-                    <td><b>Penggunaan m³</b></td>
-                    <td>:</td>
-                    <td>{{ $pembayaran->pemakaian->jumlah_penggunaan  }} m³</td>
-                    <hr>
-                </tr>
 
-                <tr>
-                    <hr style="text-align: center;">
-                </tr>
+        <hr>
 
-                <tr>
-                    <td><strong>Biaya per-m³</strong></td>
-                    <td>:</td>
-                    <td>Rp. {{ number_format($tarif->m3, 2, ',', '.') }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Biaya Beban</strong></td>
-                    <td>:</td>
-                    <td>Rp. {{ number_format($tarif->beban, 2, ',', '.') }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Denda</strong></td>
-                    <td>:</td>
-                    <td>Rp. {{ number_format($pembayaran->denda, 2, ',', '.') }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Sub-Total</strong></td>
-                    <td>:</td>
-                    <td>Rp. {{ number_format($pembayaran->subTotal, 2, ',', '.') }}</td>
-                </tr>
-
-                <tr>
-                    <hr style="text-align: center;">
-                </tr>
-
-                <tr>
-                    <td><strong>Uang Pelanggan</strong></td>
-                    <td>:</td>
-                    <td>Rp. {{ number_format($pembayaran->uang_cash, 2, ',', '.') }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Uang Kembalian</strong></td>
-                    <td>:</td>
-                    <td>Rp. {{ number_format($pembayaran->kembalian, 2, ',', '.') }}</td>
-                </tr>
-            </table>
-            <p class="lunas" style="text-align: center">Periode {{ $pembayaran->pemakaian->periode->periode }} <b>LUNAS !!!</b></p>
-        </div>
+        <!-- Catatan dan Kontak (footer kiri dan kanan) -->
+        <table>
+            <tr>
+                <td style="width: 60%; vertical-align: top;" class="small">
+                    Pastikan Anda telah membayar air<br>
+                    sebelum tanggal 25 setiap bulan...!!!!!<br><br>
+                    Rusak/Bocor:<br>
+                    H. MARWAN: 0878645410124<br>
+                    AWAN: 087754320725
+                </td>
+                <td style="width: 40%; text-align: center; vertical-align: top;">
+                    <strong>KETUA PAMDES</strong><br><br><br>
+                    H. Marwan Hadi
+                </td>
+            </tr>
+        </table>
     </div>
+
 </body>
+
 </html>

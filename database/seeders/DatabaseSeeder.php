@@ -37,12 +37,14 @@ class DatabaseSeeder extends Seeder
             'name'      => 'admin',
             'email'     => 'admin@gmail.com',
             'password'  => bcrypt('password'),
+            'alamat'    => 'Purworejo',
             'role_id'   => 1
         ]);
         User::create([
             'name'      => 'petugas',
             'email'     => 'petugas@gmail.com',
             'password'  => bcrypt('password'),
+            'alamat'    => 'Purworejo',
             'role_id'   => 2
         ]);
         User::create([
@@ -51,6 +53,7 @@ class DatabaseSeeder extends Seeder
             'email'         => 'purnomodwi174@gmail.com',
             'no_hp'         => '081229248179',
             'tgl_pasang'    => '2023-10-16',
+            'alamat'        => 'Purworejo',
             'password'      => bcrypt('password'),
             'role_id'       => 3
         ]);
@@ -60,6 +63,7 @@ class DatabaseSeeder extends Seeder
             'email'         => 'mujiyono@gmail.com',
             'no_hp'         => '081229248179',
             'tgl_pasang'    => '2023-10-16',
+            'alamat'        => 'Purworejo',
             'password'      => bcrypt('password'),
             'role_id'       => 3
         ]);
@@ -69,6 +73,7 @@ class DatabaseSeeder extends Seeder
             'email'         => 'robert@gmail.com',
             'no_hp'         => '081229248179',
             'tgl_pasang'    => '2023-10-16',
+            'alamat'        => 'Purworejo',
             'password'      => bcrypt('password'),
             'role_id'       => 3
         ]);
@@ -78,6 +83,7 @@ class DatabaseSeeder extends Seeder
             'email'         => 'budiono@gmail.com',
             'no_hp'         => '081229248179',
             'tgl_pasang'    => '2023-10-16',
+            'alamat'        => 'Purworejo',
             'password'      => bcrypt('password'),
             'role_id'       => 3
         ]);
@@ -133,24 +139,26 @@ class DatabaseSeeder extends Seeder
         Tarif::create([
             'm3'        => '1500',
             'beban'     => '5000',
-            'denda'     => '5000'
+            'denda'     => '5000',
+            'sampah'    => '7000',
+            'masjid'    => '2000',
         ]);
 
         Periode::create([
-            'periode'   => 'Januari 2025',
-            'bulan_id'  => 1,
+            'periode'   => 'Juni 2025',
+            'bulan_id'  => 6,
             'tahun_id'  => 1,
             'status'    => 'Aktif'
         ]);
         Periode::create([
-            'periode'   => 'Februari 2025',
-            'bulan_id'  => 2,
+            'periode'   => 'Juli 2025',
+            'bulan_id'  => 7,
             'tahun_id'  => 1,
             'status'    => 'Aktif'
         ]);
         Periode::create([
-            'periode'   => 'Maret 2025',
-            'bulan_id'  => 3,
+            'periode'   => 'Agustus 2025',
+            'bulan_id'  => 8,
             'tahun_id'  => 1,
             'status'    => 'Aktif'
         ]);

@@ -58,8 +58,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h2>Kartu Pelanggan Air Pamsimas</h2>
-            <p>Desa Karangmulyo, Kecamatan Purwodadi, Kabupaten Purworejo, jawa Tengah 54173</p>
+            <h2>Kartu Pelanggan PAMDes</h2>
+            <p>Desa Peresak, Kecamatan Sakra, Kabupaten Lombok Timur, NTB 83671</p>
         </div>
 
         <hr>
@@ -96,6 +96,13 @@
                         <td><b>Tanggal Pasang</b></td>
                         <td>:</td>
                         <td>{{ \Carbon\Carbon::parse($pelanggan->tgl_pasang)->format('d-m-Y') }}</td>
+
+                        <hr>
+                    </tr>
+                    <tr>
+                        <td><b>Alamat</b></td>
+                        <td>:</td>
+                        <td>{{ $pelanggan->alamat }}</td>
 
                         <hr>
                     </tr>

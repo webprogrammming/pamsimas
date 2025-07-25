@@ -30,7 +30,7 @@ class CekTagihanPelangganController extends Controller
     public function detailTagihan($id)
     {
         $tagihan = Pemakaian::with(['periode', 'user'])->find($id);
-
+        // dd($tagihan);
         return view('cek-tagihan.detail', [
             'tagihan'   => $tagihan,
             'tarif'     => Tarif::first(),
@@ -96,6 +96,8 @@ class CekTagihanPelangganController extends Controller
             $pembayaran->pemakaian_id    = $pemakaian->id;
             $pembayaran->m3              = $tarif->m3;
             $pembayaran->beban           = $tarif->beban;
+            $pembayaran->sampah          = $tarif->sampah;
+            $pembayaran->masjid          = $tarif->masjid;
             $pembayaran->kd_pembayaran   = $kd_pembayaran;
             $pembayaran->tgl_bayar       = $tgl_bayar->format('Y-m-d');
             $pembayaran->uang_cash       = $gross_amount;

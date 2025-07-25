@@ -13,12 +13,12 @@
                 </div>
 
                 <div class="card-body">
-                <form action="/cek-tagihan/bayar" method="POST">
-                    @csrf
-                    
+                    <form action="/cek-tagihan/bayar" method="POST">
+                        @csrf
+
                         <input type="hidden" id="pemakaian_id" name="pemakaian_id" value="{{ $tagihan->id }}">
                         <input type="hidden" class="form-control" name="tgl_bayar" id="tgl_bayar" readonly>
-                        
+
                         <table style="width: 88%" class="mb-3 table mx-auto">
                             <tr class="bg-dark text-white">
                                 <td><b>Periode</b></td>
@@ -63,6 +63,16 @@
                                 <td>Rp. {{ $tarif->beban }}</td>
                             </tr>
                             <tr>
+                                <td><b>Uang Sampah </b></td>
+                                <td>:</td>
+                                <td>Rp. {{ $tarif->sampah }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Sumbangan Masjid </b></td>
+                                <td>:</td>
+                                <td>Rp. {{ $tarif->masjid }}</td>
+                            </tr>
+                            <tr>
                                 <td><b>Tarif Denda</b></td>
                                 <td>:</td>
                                 <td>Rp. <span id="denda">{{ $tarif->denda }}</span></td>
@@ -75,18 +85,19 @@
                         </table>
                         @if ($tagihan->status == 'belum dibayar')
                             <div class="button">
-                                <button type="button" class="btn btn-success m-1 float-end" id="bayar">Bayar Sekarang</button>
+                                <button type="button" class="btn btn-success m-1 float-end" id="bayar">Bayar
+                                    Sekarang</button>
                             </div>
                         @else
                         @endif
-                </form>
-            </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#table_id').DataTable();
         });
 
@@ -95,9 +106,9 @@
             var tgl_bayar = new Date();
 
             if (tgl_bayar > tanggal_batas_bayar) {
-                var selisihBulan    = calculateMonthDifference(tgl_bayar, tanggal_batas_bayar);
-                var dendaPerBulan   = parseFloat($('#denda').text());
-                var totalDenda      = selisihBulan * dendaPerBulan;
+                var selisihBulan = calculateMonthDifference(tgl_bayar, tanggal_batas_bayar);
+                var dendaPerBulan = parseFloat($('#denda').text());
+                var totalDenda = selisihBulan * dendaPerBulan;
                 var totalPembayaran = parseFloat($('#jumlah_pembayaran').text()) + totalDenda;
                 $('#denda').text(totalDenda.toFixed(2));
                 $('#jumlah_pembayaran').text(totalPembayaran.toFixed(2));
@@ -117,10 +128,10 @@
 
     <!-- Generate Tanggal Hari Ini -->
     <script>
-        var today   = new Date();
-        var year    = today.getFullYear();
-        var month   = (today.getMonth() + 1).toString().padStart(2, '0');
-        var day     = today.getDate().toString().padStart(2, '0');
+        var today = new Date();
+        var year = today.getFullYear();
+        var month = (today.getMonth() + 1).toString().padStart(2, '0');
+        var day = today.getDate().toString().padStart(2, '0');
 
         var formattedDate = year + '-' + month + '-' + day;
         document.getElementById('tgl_bayar').value = formattedDate;
@@ -129,10 +140,10 @@
     <script>
         $(document).ready(function() {
             $('#bayar').click(function() {
-                var token             = $('meta[name="csrf-token"]').attr('content');
-                var tgl_bayar         = $('#tgl_bayar').val();
-                var pemakaianId       = $('#pemakaian_id').val();
-                var denda             = $('#denda').text();
+                var token = $('meta[name="csrf-token"]').attr('content');
+                var tgl_bayar = $('#tgl_bayar').val();
+                var pemakaianId = $('#pemakaian_id').val();
+                var denda = $('#denda').text();
                 var jumlah_pembayaran = $('#jumlah_pembayaran').text();
 
                 $.ajax({
@@ -170,7 +181,7 @@
                             onError: function(result) {
                                 Swal.fire({
                                     icon: 'error',
-                                    title: 'Pembayaran gagak',
+                                    title: 'Pembayaran gagal',
                                     text: 'Ups! Ada yang salah dengan pembayaran Anda',
                                 }).then((result) => {
                                     console.log(result);
@@ -193,6 +204,4 @@
             });
         });
     </script>
-
-
 @endsection

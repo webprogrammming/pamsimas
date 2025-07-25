@@ -43,6 +43,8 @@ class PembayaranController extends Controller
             return response()->json([
                 'm3'    => $tarif->m3,
                 'beban' => $tarif->beban,
+                'masjid' => $tarif->masjid,
+                'sampah' => $tarif->sampah,
                 'denda' => $tarif->denda,
             ]);
         }
@@ -60,6 +62,8 @@ class PembayaranController extends Controller
         $uang_cash      = $request->input('uang_cash');
         $kembalian      = $request->input('kembalian');
         $denda          = $request->input('denda');
+        $sampah         = $request->input('sampah');
+        $masjid         = $request->input('masjid');
         $subTotal       = $request->input('jumlah_pembayaran');
 
         if ($uang_cash < $subTotal) {
@@ -76,6 +80,8 @@ class PembayaranController extends Controller
         $pembayaran->tgl_bayar       = $tgl_bayar;
         $pembayaran->pemakaian_id    = $pemakaian_id;
         $pembayaran->denda           = $denda;
+        $pembayaran->masjid          = $masjid;
+        $pembayaran->sampah          = $sampah;
         $pembayaran->subTotal        = $subTotal;
         $pembayaran->uang_cash       = $uang_cash;
         $pembayaran->kembalian       = $kembalian;
@@ -121,7 +127,14 @@ class PembayaranController extends Controller
         $tarifM3            = $request->query('tarif_m3');
         $tarifBeban         = $request->query('tarif_beban');
         $denda              = $request->query('denda');
+        $sampah             = $request->query('sampah');
+        $masjid             = $request->query('masjid');
         $subTotal           = $request->query('jumlah_pembayaran');
+
+        $logoLombokPath = storage_path('app/public/logo/logo_lombok.png');
+        $logoBumdesPath = storage_path('app/public/logo/logo_bumdes.png');
+        $logoLombok     = base64_encode(file_get_contents($logoLombokPath));
+        $logoBumdes     = base64_encode(file_get_contents($logoBumdesPath));
 
         $pdf = PDF::loadView('pembayaran.bukti-pembayaran', [
             'pemakaian'         => $pemakaian,
@@ -130,7 +143,11 @@ class PembayaranController extends Controller
             'tarif_m3'          => $tarifM3,
             'tarif_beban'       => $tarifBeban,
             'denda'             => $denda,
+            'sampah'            => $sampah,
+            'masjid'            => $masjid,
             'subTotal'          => $subTotal,
+            'logoLombok'        => $logoLombok,
+            'logoBumdes'        => $logoBumdes
         ]);
         return $pdf->stream('bukti-pembayaran.pdf');
     }

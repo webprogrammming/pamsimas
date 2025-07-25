@@ -16,6 +16,8 @@ return new class extends Migration
             $table->double('m3');
             $table->double('beban');
             $table->double('denda');
+            $table->double('sampah');
+            $table->double('masjid');
             $table->timestamps();
         });
     }

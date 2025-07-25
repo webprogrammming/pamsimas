@@ -46,7 +46,7 @@
                                         <option value="" selected>-- Pilih Pelanggan --</option>
                                         @foreach ($users as $user)
                                             <option value="{{ $user->id }}">{{ $user->no_pelanggan }} |
-                                                {{ $user->name }}</option>
+                                                {{ $user->name }} | {{ $user->alamat }}</option>
                                         @endforeach
                                     </select>
 
@@ -56,7 +56,7 @@
                                         <div class="mb-3">
                                             <label for="penggunaan_awal" class="form-label">Penggunaan Awal</label>
                                             <input type="number" class="form-control" name="penggunaan_awal"
-                                                id="penggunaan_awal" readonly>
+                                                id="penggunaan_awal" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">

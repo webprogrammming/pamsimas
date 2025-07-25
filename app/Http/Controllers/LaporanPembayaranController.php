@@ -8,6 +8,7 @@ use App\Models\Pemakaian;
 use App\Models\Pembayaran;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Tarif;
 
 class LaporanPembayaranController extends Controller
 {
@@ -54,6 +55,7 @@ class LaporanPembayaranController extends Controller
         }
 
         $data = $pembayaran->with('pemakaian.user')->get();
+        $tarif = Tarif::first();
 
         if (empty($tanggalMulai) && empty($tanggalSelesai)) {
             $data = Pembayaran::with('pemakaian.user')
@@ -62,9 +64,9 @@ class LaporanPembayaranController extends Controller
         }
 
         $pdf  = new Dompdf();
-        $html = view('laporan-pembayaran/print-pembayaran', compact('data', 'tanggalMulai', 'tanggalSelesai'));
+        $html = view('laporan-pembayaran/print-pembayaran', compact('data', 'tarif', 'tanggalMulai', 'tanggalSelesai'));
         $pdf->loadHtml($html);
-        $pdf->setPaper('A4', 'portrait');
+        $pdf->setPaper('A4', 'landscape');
         $pdf->render();
         $pdf->stream('print-pembayaran.pdf', ['Attachment' => false]);
     }

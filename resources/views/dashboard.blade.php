@@ -10,8 +10,8 @@
                             <h2 class="card-title my-5 fw-semibold text-white">Selamat Datang {{ auth()->user()->name }}</h2>
                         </div>
                         <div class="col-lg-6">
-                            <img src="/assets/images/dashboard/money.svg" alt="Selamat Datang"
-                                style="width: 300px; height: 200px" class="float-end">
+                            <img src="/assets/images/dashboard/BUMDes_Desa_Peresak.png" alt="Selamat Datang"
+                                style="width: 212px; height: 200px" class="float-end">
                         </div>
                     </div>
                 </div>

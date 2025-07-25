@@ -5,8 +5,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sistem Informasi Pembayaran Air Pamsimas</title>
-  <link rel="shortcut icon" type="image/png" href="/assets/images/logos/favicon.png" />
+  <title>Sistem Informasi Pembayaran Tagihan Layanan PAMDes</title>
+  <link rel="shortcut icon" type="image/png" href="/assets/images/logos/BUMDes_Desa_Peresak.png" />
   <link rel="stylesheet" href="/assets/css/styles.min.css" />
   <meta name="csrf-token" content="{{ csrf_token() }}" />
 

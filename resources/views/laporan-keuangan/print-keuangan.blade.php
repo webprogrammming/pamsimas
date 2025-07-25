@@ -54,8 +54,9 @@
     <div class="container">
         <div class="row">
             <div class="column">
-                <h2>PAMSIMAS TIRTOMULYO</h2>
-                <p>Desa Kalirejo, Kecamatan Wirosari, Kabupaten Grobogan, Jawa Tengah</p>
+                <h3>LAPORAN KEUANGAN PAMSIMAS</h3>
+                <h3>BUMDES SALING SEDOK</h3>
+                <h3>KEC. SAKRA KAB. LOMBOK TIMUR</h3>
                 <hr style="width: 85%; text-align: center;">
                 <h3 style="text-align: center;">Laporan Keuangan
                     {{ $tanggalMulai && $tanggalSelesai

@@ -26,6 +26,8 @@
                                     <th>No</th>
                                     <th>Biaya Per m³</th>
                                     <th>Biaya Beban</th>
+                                    <th>Iuran Sampah</th>
+                                    <th>Sumbangan Masjid</th>
                                     <th>Biaya Denda</th>
                                     <th>Perbarui Tarif</th>
                                 </tr>
@@ -36,6 +38,8 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>Rp. {{ $tarif->m3 }}</td>
                                         <td>Rp. {{ $tarif->beban }}</td>
+                                        <td>Rp. {{ $tarif->sampah }}</td>
+                                        <td>Rp. {{ $tarif->masjid }}</td>
                                         <td>Rp. {{ $tarif->denda }} / Bulan</td>
                                         <td>
                                             <a href="/tarif/{{ $tarif->id }}/edit" type="button"

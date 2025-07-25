@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+    container_name: pamsimas-app
+    volumes:
+      - ./:/var/www/html
+    expose:
+      - "9000"
+    networks:
+      - pam-network
+
+  nginx:
+    image: nginx:latest
+    container_name: pamsimas-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+    networks:
+      - pam-network
+
+networks:
+  pam-network:
+    driver: bridge

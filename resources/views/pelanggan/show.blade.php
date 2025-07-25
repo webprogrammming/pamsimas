@@ -72,6 +72,13 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div class="mb-3">
+                                <label for="alamat" class="form-label">Alamat <span style="color: red">*</span></label>
+                                <textarea name="alamat" id="alamat" cols="30" rows="7" disabled class="form-control">{{ $pelanggan->alamat }}</textarea>
+                                @error('alamat')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
                     </div>
                 </div>

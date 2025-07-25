@@ -45,6 +45,28 @@
                             @enderror
                         </div>
 
+                        <label for="sampah" class="mb-2">Biaya Iuran Sampah <span
+                                style="color: red">*</span></label><br>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Rp</span>
+                            <input type="number" class="form-control" name="sampah"
+                                value="{{ old('sampah', $tarif->sampah) }}">
+                            @error('sampah')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <label for="masjid" class="mb-2">Biaya Iuran Masjid <span
+                                style="color: red">*</span></label><br>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Rp</span>
+                            <input type="number" class="form-control" name="masjid"
+                                value="{{ old('masjid', $tarif->masjid) }}">
+                            @error('masjid')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <label for="denda" class="mb-2">Biaya Denda <span style="color: red">*</span></label><br>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">Rp</span>

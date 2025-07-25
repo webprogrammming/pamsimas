@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('tgl_bayar');
             $table->double('uang_cash');
             $table->double('kembalian');
+            $table->double('sampah');
+            $table->double('masjid');
             $table->double('denda');
             $table->double('subTotal');
             $table->uuid('pemakaian_id');

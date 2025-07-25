@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-header bg-primary">
                     <div class="row align-items-center">
-                        <h5 class="card-title fw-semibold text-white">Saldo Pamsimas</h5>
+                        <h5 class="card-title fw-semibold text-white">Saldo PAMDes</h5>
                     </div>
                 </div>
 

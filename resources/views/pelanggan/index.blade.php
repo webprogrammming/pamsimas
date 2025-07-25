@@ -30,6 +30,7 @@
                                     <th>No. Pelanggan</th>
                                     <th>Nama</th>
                                     <th>Tgl. Pasang</th>
+                                    <th>Alamat</th>
                                     <th>Opsi</th>
                                 </tr>
                             </thead>
@@ -40,6 +41,7 @@
                                         <td>{{ $pelanggan->no_pelanggan }}</td>
                                         <td>{{ $pelanggan->name }}</td>
                                         <td>{{ date('d-m-Y', strtotime($pelanggan->tgl_pasang)) }}</td>
+                                        <td>{{ $pelanggan->alamat }}</td>
                                         <td>
                                             <a href="/pelanggan/kartu-pelanggan/{{ $pelanggan->id }}" type="button"
                                                 class="btn btn-dark mb-1"><i class="ti ti-printer"></i></a>

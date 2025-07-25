@@ -61,7 +61,9 @@ class PemakaianController extends Controller
         $jumlah_penggunaan  = $request->jumlah_penggunaan;
         $m3                 = $tarif->m3;
         $beban              = $tarif->beban;
-        $jumlah_pembayaran  = ($jumlah_penggunaan * $m3) + $beban;
+        $sampah             = $tarif->sampah;
+        $masjid             = $tarif->masjid;
+        $jumlah_pembayaran  = ($jumlah_penggunaan * $m3) + $beban + $sampah + $masjid;
 
         $data = $request->all();
 

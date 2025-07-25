@@ -42,7 +42,7 @@
                                     <select class="js-example-basic-single" name="user_id" style="width: 100%;">
                                         @foreach ($users as $user)
                                             <option value="{{ $user->id }}">{{ $user->no_pelanggan }} |
-                                                {{ $user->name }}</option>
+                                                {{ $user->name }} | {{ $user->alamat }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -104,6 +104,14 @@
                                     <tr>
                                         <td>Tarif Beban</td>
                                         <td>Rp. <span id="beban"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Uang Sampah</td>
+                                        <td>Rp. <span id="sampah"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sumbangan Masjid</td>
+                                        <td>Rp. <span id="masjid"></span></td>
                                     </tr>
                                     <tr>
                                         <td>Denda</td>
@@ -209,10 +217,14 @@
                             success: function(tarifData) {
                                 $('#m3').val(tarifData.m3);
                                 $('#beban').val(tarifData.beban);
+                                $('#sampah').val(tarifData.sampah);
+                                $('#masjid').val(tarifData.masjid);
                                 $('#denda').val(tarifData.denda);
 
                                 var m3 = parseFloat(tarifData.m3);
                                 var beban = parseFloat(tarifData.beban);
+                                var sampah = parseFloat(tarifData.sampah);
+                                var masjid = parseFloat(tarifData.masjid);
                                 var denda = parseFloat(tarifData.denda);
 
                                 var tanggal_batas_bayar = new Date(data
@@ -237,6 +249,8 @@
 
                                 $('#m3').text(m3);
                                 $('#beban').text(beban);
+                                $('#masjid').text(masjid);
+                                $('#sampah').text(sampah);
                             }
                         });
 
@@ -280,6 +294,8 @@
                 var token = $('meta[name="csrf-token"]').attr('content');
                 var m3 = $('#m3').val();
                 var beban = $('#beban').val();
+                var sampah = $('#sampah').val();
+                var masjid = $('#masjid').val();
                 var tgl_bayar = $('#tgl_bayar').val();
                 var pemakaianId = $('#pemakaian_id').val();
                 var uangCash = parseFloat($('#uang_cash').val());
@@ -299,6 +315,8 @@
                         _token: token,
                         m3: m3,
                         beban: beban,
+                        sampah: sampah,
+                        masjid: masjid,
                         tgl_bayar: tgl_bayar,
                         pemakaian_id: pemakaianId,
                         uang_cash: uangCash,
@@ -332,6 +350,8 @@
             var detailPenggunaan = document.getElementById('detail_penggunaan').textContent;
             var tarifM3 = document.getElementById('m3').textContent;
             var tarifBeban = document.getElementById('beban').textContent;
+            var tarifSampah = document.getElementById('sampah').textContent;
+            var tarifMasjid = document.getElementById('masjid').textContent;
             var denda = document.getElementById('denda').textContent;
             var subTotal = document.getElementById('jumlah_pembayaran').textContent;
 
@@ -341,6 +361,8 @@
                     '&tarif_m3=' + tarifM3 +
                     '&tarif_beban=' + tarifBeban +
                     '&denda=' + denda +
+                    '&masjid=' + tarifMasjid +
+                    '&sampah=' + tarifSampah +
                     '&jumlah_pembayaran=' + subTotal;
             } else {
                 $('#alert-error').show();

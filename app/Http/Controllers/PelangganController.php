@@ -41,6 +41,7 @@ class PelangganController extends Controller
             'email'             => 'required|unique:users|email:rfc,dns',
             'no_hp'             => 'required|unique:users',
             'tgl_pasang'        => 'required',
+            'alamat'            => 'required',
             'password'          => 'required',
             'confirmPassword'   => 'required|same:password'
         ], [
@@ -51,6 +52,7 @@ class PelangganController extends Controller
             'no_hp.required'            => 'Form wajib diisi !',
             'no_hp.unique'              => 'No HP sudah digunakan !',
             'tgl_pasang.required'       => 'Form wajib diisi !',
+            'alamat.required'           => 'Form wajib diisi !',
             'password.required'         => 'Form wajib diisi !',
             'confirmPassword.required'  => 'Form wajib diisi !',
             'confirmPassword.same'      => 'Konfirmasi password tidak sama !'
@@ -81,6 +83,7 @@ class PelangganController extends Controller
             'email'         => $request->email,
             'no_hp'         => $request->no_hp,
             'tgl_pasang'    => $request->tgl_pasang,
+            'alamat'        => $request->alamat,
             'password'      => $request->password,
             'no_pelanggan'  => $new_no_pelanggan,
             'role_id'       => 3
@@ -125,12 +128,14 @@ class PelangganController extends Controller
             'email'         => 'required|email',
             'no_hp'         => 'required',
             'tgl_pasang'    => 'required',
+            'alamat'        => 'required',
         ], [
             'name.required'     => 'Form wajib diisi !',
             'email.required'    => 'Form wajib diisi !',
             'email.email'       => 'Gunakan email yang valid !',
             'no_hp.required'    => 'Form wajib diisi !',
             'tgl_pasang.required' => 'Form wajib diisi !',
+            'alamat.required'   => 'Form wajib diisi !',
         ]);
 
         if ($validator->fails()) {
@@ -156,6 +161,7 @@ class PelangganController extends Controller
                 'email'         => $request->email,
                 'no_hp'         => $request->no_hp,
                 'tgl_pasang'    => $request->tgl_pasang,
+                'alamat'        => $request->alamat,
                 'password'      => $request->password
             ]);
         } else {
@@ -164,6 +170,7 @@ class PelangganController extends Controller
                 'email'         => $request->email,
                 'no_hp'         => $request->no_hp,
                 'tgl_pasang'    => $request->tgl_pasang,
+                'alamat'        => $request->alamat,
             ]);
         }
 

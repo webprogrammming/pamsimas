@@ -23,19 +23,19 @@ class RiwayatPembayaranController extends Controller
 
         $pembayaran = Pembayaran::query();
 
-        if($tanggalMulai && $tanggalSelesai){
+        if ($tanggalMulai && $tanggalSelesai) {
             $pembayaran->whereBetween('tgl_bayar', [$tanggalMulai, $tanggalSelesai])
-                    ->orderBy('id', 'DESC');
+                ->orderBy('id', 'DESC');
         }
 
         $data = $pembayaran->with('pemakaian.user')->get();
 
-        if(empty($tanggalMulai) && empty($tanggalSelesai)){
+        if (empty($tanggalMulai) && empty($tanggalSelesai)) {
             $data = Pembayaran::with('pemakaian.user')
-                    ->orderBy('id', 'DESC')
-                    ->get();
+                ->orderBy('id', 'DESC')
+                ->get();
         }
-        
+
         return response()->json($data);
     }
 
@@ -44,11 +44,17 @@ class RiwayatPembayaranController extends Controller
         $pembayaran = Pembayaran::find($id);
         $tarif      = Tarif::first();
 
+        $logoLombokPath = storage_path('app/public/logo/logo_lombok.png');
+        $logoBumdesPath = storage_path('app/public/logo/logo_bumdes.png');
+        $logoLombok     = base64_encode(file_get_contents($logoLombokPath));
+        $logoBumdes     = base64_encode(file_get_contents($logoBumdesPath));
 
         $pdf = PDF::loadView('riwayat-pembayaran.print', [
             'pembayaran'    => $pembayaran->first(),
-            'tarif'         => $tarif
-        ]); 
+            'tarif'         => $tarif,
+            'logoLombok'    => $logoLombok,
+            'logoBumdes'    => $logoBumdes
+        ]);
 
         return $pdf->stream('print.pdf');
     }

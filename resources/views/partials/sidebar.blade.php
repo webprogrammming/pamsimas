@@ -3,8 +3,8 @@
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
             <a href="/" class="text-nowrap logo-img my-2 d-flex align-items-center">
-                <img src="/assets/images/auth/logo.png" alt="Logo" style="max-height:50px; margin-right: 10px;">
-                <h3 style="margin: 0;">PAMSIMAS</h3>
+                <img src="/assets/images/auth/BUMDes_Desa_Peresak.png" alt="Logo" style="max-height:50px; margin-right: 10px;">
+                <h3 style="margin: 0;">BUMDes</h3>
             </a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                 <i class="ti ti-x fs-8"></i>
